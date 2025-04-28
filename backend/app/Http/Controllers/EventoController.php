@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evento;
 use App\Models\Categoria;
-use App\Models\File;
+use App\Models\EventFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 class EventoController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
     public function store(Request $request)
@@ -27,29 +28,52 @@ class EventoController extends Controller
                 'precio' => 'nullable|numeric',
                 'premios' => 'nullable|string',
                 'inscripcion_abierta' => 'nullable|boolean',
+                'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
+            $input = $request->all();
+            $category = Categoria::findOrFail($request->input('categoria_id'));
             $user = Auth::user();
 
-            $evento = new Evento();
-            $evento->nombre = $request->input('nombre');
-            $evento->descripcion = $request->input('descripcion');
-            $evento->fecha_evento = $request->input('fecha_evento');
-            $evento->ubicacion = $request->input('ubicacion');
-            $evento->premios = $request->input('premios');
-            $evento->inscripcion_abierta = $request->input('inscripcion_abierta', true);
-            $evento->precio = $request->input('precio', 0);
-
-            // Asociaciones válidas
+            $evento = new Evento($input);
             $evento->user()->associate($user);
-            $evento->categoria_id = $request->input('categoria_id'); // directamente el id, o si tienes relación belongsTo puedes usar ->associate()
+            $evento->categoria()->associate($category);
+            $res = $evento->save();
 
-            $evento->save();
+            if ($res) {
+                $res_file = $this->fileUpload($request, $evento->id);
+
+                if ($res_file) {
+                    return response()->json($evento, 201);
+                }
+
+                return response()->json(['error' => 'Error al subir la imagen del evento'], 500);
+            }
 
             return response()->json($evento, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+
+    public function fileUpload(Request $req, $evento_id = null)
+    {
+        $file = $req-> file('file');
+        $fileModel = new EventFile();
+        $fileModel->evento_id = $evento_id;
+        if ($req->file('file')) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->move('storage/', $filename);
+            $fileModel->name = $filename;
+            $fileModel->file_path = $filename;
+            $res = $fileModel->save();
+            if ($res) {
+                return $fileModel;
+            } else {
+                return false; 
+            }
+        }
+        return false; 
     }
     public function update(Request $request, $id)
     {
@@ -100,7 +124,7 @@ class EventoController extends Controller
     }
     public function delete(Request $request, $id)
     {
-        try{
+        try {
             $evento = Evento::findOrFail($id);
 
             //Compruebo el user
@@ -111,64 +135,40 @@ class EventoController extends Controller
 
             $evento->delete();
             return $evento;
-        }catch (\Exception $exception){
-            return response()->json(['error'=>$exception->getMessage()]);
-        }
-    }
-    public function fileUpload(Request $req, $evento_id = null)
-    {
-        if (!$req->hasFile('file')) {
-            return response()->json(['error' => 'No file uploaded.'], 400);
-        }
-
-        $file = $req->file('file');
-
-        try {
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move('storage/', $filename);
-
-            $fileModel = new File();
-            $fileModel->evento_id = $evento_id;
-            $fileModel->name = $filename;
-            $fileModel->file_path = $filename;
-
-            $fileModel->save();
-
-            return $fileModel;
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'File upload failed: ' . $e->getMessage()], 500);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
 
     public function index()
     {
-        try{
-            //$eventos = Evento::with('file','user','categoria')->get(); Con file
-            $eventos = Evento::with('user','categoria')->get();
+        try {
+            $eventos = Evento::with('file','user','categoria')->get(); //Con file
+            //$eventos = Evento::with('user', 'categoria')->get(); //Sin file
             return $eventos;
-        }catch (\Exception $exception){
-            return response()->json(['error'=>$exception->getMessage()]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
-    public function listmine(){
-        try{
+    public function listmine()
+    {
+        try {
             $user = Auth::user();
-            //$eventos = Evento::with('file', 'user', 'categoria')->where('user_id', $user->id)->get(); Con file
-            $eventos = Evento::with('user', 'categoria')->where('user_id', $user->id)->get();
+            $eventos = Evento::with('file', 'user', 'categoria')->where('user_id', $user->id)->get(); //Con file
+            //$eventos = Evento::with('user', 'categoria')->where('user_id', $user->id)->get(); //Sin file
             return $eventos;
-        }catch (\Exception $exception){
-            return response()->json(['error'=>$exception->getMessage()]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
     public function show(Request $request, $id)
     {
-        try{
-            //$evento = Evento::with('file', 'user', 'categoria')->findOrFail($id); Con file
-            $evento = Evento::with('user', 'categoria')->findOrFail($id);
+        try {
+            $evento = Evento::with('file', 'user', 'categoria')->findOrFail($id); //Con file
+            //$evento = Evento::with('user', 'categoria')->findOrFail($id); //Sin file
             return $evento;
-        }catch (\Exception $exception){
-            return response()->json(['error'=>$exception->getMessage()]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
     public function inscribirse(Request $request, $id)

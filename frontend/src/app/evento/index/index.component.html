@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center mb-4">Lista de Eventos</h1>
+      <div *ngIf="eventos.length > 0; else noEventos">
+        <div class="row">
+          <div *ngFor="let evento of eventos" class="col-md-6 col-sm-12">
+            <div class="card mb-3 shadow-sm">
+              <div class="card-header bg-primary text-white fw-bold">
+                {{ evento.nombre }}
+              </div>
+              <div class="card-body">
+                <p class="card-text"><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+                <p class="card-text"><strong>Fecha:</strong> {{ evento.fecha_evento }}</p>
+                <p class="card-text"><strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
+                <p class="card-text"><strong>Categoría ID:</strong> {{ evento.categoria_id }}</p>
+                <p class="card-text"><strong>Precio:</strong>
+                  <span *ngIf="evento.precio === 0; else precioNumerico">GRATIS</span>
+                  <ng-template #precioNumerico>
+                    {{ evento.precio !== null ? evento.precio + ' €' : 'Gratuito' }}
+                  </ng-template>
+                </p>
+                <p class="card-text"><strong>Premios:</strong> {{ evento.premios || 'No hay premios' }}</p>
+                <p class="card-text"><strong>Inscripción Abierta:</strong> {{ evento.inscripcion_abierta ? 'Sí' : 'No' }}</p>
+                <p class="card-text"><strong>ID Usuario:</strong> {{ evento.user_id }}</p>
+                <p class="card-text"><strong>ID:</strong> {{ evento.id }}</p>
+
+                <div *ngIf="evento.file && evento.file.file_path" class="text-center my-3">
+                  <img
+                    [src]="'http://127.0.0.1:8000/storage/' + evento.file.file_path"
+                    class="img-fluid img-thumbnail rounded shadow"
+                    alt="Imagen del evento"
+                    style="max-height: 300px; object-fit: cover;"
+                  />
+                </div>
+
+                <button class="btn btn-outline-primary btn-sm mt-2" (click)="verDetalles(evento?.id)">
+                  Ver Detalles
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noEventos>
+        <p class="text-center text-muted">No hay eventos para mostrar.</p>
+      </ng-template>
+
+      <div *ngIf="errors" class="alert alert-danger mt-3">
+        <p>Error: {{ errors }}</p>
+      </div>
+    </div>
+  </div>
+</div>

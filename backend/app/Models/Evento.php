@@ -16,7 +16,8 @@ class Evento extends Model
         'categoria_id',
         'premios',
         'inscripcion_abierta',
-        'precio'
+        'precio',
+        'ubicacion',
     ];
 
     public function categoria()
@@ -30,7 +31,8 @@ class Evento extends Model
     public function inscripciones(){
         return $this->belongsToMany(User::class, 'evento_user');
     }
-    public  function file(){
-        return $this->hasOne(File::class);
+    public function file()
+    {
+        return $this->hasOne(EventFile::class);
     }
 }

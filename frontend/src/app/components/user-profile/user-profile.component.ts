@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../../shared/auth.service';
+import { CommonModule } from '@angular/common';
 
 // Interfaz del usuario
 export class User {
@@ -12,6 +13,7 @@ export class User {
   standalone: true,
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
+  imports: [CommonModule],
 })
 export class UserProfileComponent implements OnInit {
   UserProfile!: User; 
