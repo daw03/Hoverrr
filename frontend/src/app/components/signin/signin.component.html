@@ -1,0 +1,38 @@
+<div class="auth-wrapper">
+  <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h3 class="h3 mb-3 font-weight-normal text-center">Login</h3>
+
+    <!-- Errors -->
+    <div *ngIf="errors?.email" class="alert alert-danger mt-3">
+      {{ errors?.email }}
+    </div>
+    <div *ngIf="errors?.password" class="alert alert-danger mt-3">
+      {{ errors?.password }}
+    </div>
+
+    <!-- Login form -->
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="Enter email"
+        formControlName="email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        placeholder="Password"
+        formControlName="password"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-block btn-primary">Login</button>
+  </form>
+</div>
