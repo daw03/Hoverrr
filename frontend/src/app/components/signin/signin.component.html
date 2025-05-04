@@ -1,38 +1,39 @@
-<div class="auth-wrapper">
-  <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h3 class="h3 mb-3 font-weight-normal text-center">Login</h3>
+<div class="container d-flex justify-content-center align-items-center" style="margin-top: 3%; margin-bottom: 3%">
+  <div class="card p-4 shadow rounded-0" style="background-color: #d9d9d9; width: 400px;">
+    <h3 class="text-center mb-4">Iniciar Sesión</h3>
+    <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="errors?.email" class="alert alert-danger mt-3 rounded-0">
+        {{ errors?.email }}
+      </div>
+      <div *ngIf="errors?.password" class="alert alert-danger mt-3 rounded-0">
+        {{ errors?.password }}
+      </div>
 
-    <!-- Errors -->
-    <div *ngIf="errors?.email" class="alert alert-danger mt-3">
-      {{ errors?.email }}
-    </div>
-    <div *ngIf="errors?.password" class="alert alert-danger mt-3">
-      {{ errors?.password }}
-    </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input
+          type="email"
+          class="form-control rounded-0"
+          id="email"
+          placeholder="Ingresar correo electrónico"
+          formControlName="email"
+        />
+      </div>
 
-    <!-- Login form -->
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        placeholder="Enter email"
-        formControlName="email"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        placeholder="Password"
-        formControlName="password"
-      />
-    </div>
-
-    <button type="submit" class="btn btn-block btn-primary">Login</button>
-  </form>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control rounded-0"
+          id="password"
+          placeholder="Contraseña"
+          formControlName="password"
+        />
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-block rounded-0 login-button">Iniciar Sesión</button>
+      </div>
+      
+    </form>
+  </div>
 </div>

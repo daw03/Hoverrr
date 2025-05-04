@@ -1,1 +1,151 @@
-<p>edit works!</p>
+<div class="auth-wrapper m-3">
+  <form class="form-signin" [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
+    <h3 class="h3 mb-3 font-weight-normal text-center">Editar Evento</h3>
+
+    <div *ngIf="errors" class="alert alert-danger">
+      <ul>
+        <li *ngFor="let error of errors | keyvalue">
+          <strong>{{ error.key }}:</strong> {{ error.value }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" class="form-control m-2" formControlName="nombre" />
+      <div
+        *ngIf="
+          eventoForm.get('nombre')?.invalid &&
+          (eventoForm.get('nombre')?.dirty || eventoForm.get('nombre')?.touched)
+        "
+        class="text-danger"
+      >
+        El nombre es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+      <input
+        type="text"
+        class="form-control m-2"
+        formControlName="descripcion"
+      />
+      <div
+        *ngIf="
+          eventoForm.get('descripcion')?.invalid &&
+          (eventoForm.get('descripcion')?.dirty ||
+            eventoForm.get('descripcion')?.touched)
+        "
+        class="text-danger"
+      >
+        La descripción es obligatoria.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Fecha del Evento</label>
+      <input
+        type="date"
+        class="form-control m-2"
+        formControlName="fecha_evento"
+      />
+      <div
+        *ngIf="
+          eventoForm.get('fecha_evento')?.invalid &&
+          (eventoForm.get('fecha_evento')?.dirty ||
+            eventoForm.get('fecha_evento')?.touched)
+        "
+        class="text-danger"
+      >
+        La fecha del evento es obligatoria.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Categoría</label>
+      <select
+        formControlName="categoria_id"
+        id="categoria_id"
+        class="form-select m-2 w-25"
+      >
+        <option value="" disabled>Selecciona una categoría</option>
+        <option value="1">Categoría 1</option>
+      </select>
+      <div
+        *ngIf="
+          eventoForm.get('categoria_id')?.invalid &&
+          (eventoForm.get('categoria_id')?.dirty ||
+            eventoForm.get('categoria_id')?.touched)
+        "
+        class="text-danger"
+      >
+        La categoría es obligatoria.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Ubicación</label>
+      <input type="text" class="form-control m-2" formControlName="ubicacion" />
+      <div
+        *ngIf="
+          eventoForm.get('ubicacion')?.invalid &&
+          (eventoForm.get('ubicacion')?.dirty ||
+            eventoForm.get('ubicacion')?.touched)
+        "
+        class="text-danger"
+      >
+        La ubicación es obligatoria.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Premios (Opcional)</label>
+      <input type="text" class="form-control m-2" formControlName="premios" />
+    </div>
+
+    <div class="form-group form-check">
+      <input
+        type="checkbox"
+        class="form-check-input m-2"
+        formControlName="inscripcion_abierta"
+      />
+      <label class="form-check-label">Inscripción Abierta</label>
+    </div>
+
+    <div class="form-group">
+      <label>Precio (Opcional)</label>
+      <input type="number" class="form-control m-2" formControlName="precio" />
+    </div>
+
+    <div>
+      <label>Imagen (Opcional)</label>
+      <div *ngIf="imageUrl">
+        <img [src]="imageUrl" alt="Imagen actual" style="max-height: 100px" />
+      </div>
+      <input
+        type="file"
+        class="form-control m-2"
+        formControlName="file"
+        (change)="metoImagen($event)"
+      />
+      <div
+        *ngIf="
+          eventoForm.get('file')?.invalid &&
+          (eventoForm.get('file')?.dirty || eventoForm.get('file')?.touched)
+        "
+        class="text-danger"
+      >
+        La imagen es obligatoria.
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-block btn-primary"
+      [disabled]="eventoForm.invalid"
+    >
+      Guardar Cambios
+    </button>
+  </form>
+</div>

@@ -1,0 +1,9 @@
+.register-button {
+  background-color: #37ffd7;
+  border-color: #37ffd7;
+}
+
+.register-button:hover {
+  background-color: #29c4a3;
+  border-color: #29c4a3;
+}

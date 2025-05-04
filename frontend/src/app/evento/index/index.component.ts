@@ -22,7 +22,7 @@ export class User {
 })
 export class IndexComponent implements OnInit {
   isSignedIn!: boolean;
-  eventos!: Evento[];
+  eventos: Evento[] = [];
   isLoading = true;
   user: User = new User();
   errors: any = null;

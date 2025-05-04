@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -10,8 +10,7 @@ import { MineComponent } from './evento/mine/mine.component';
 import { ViewEventoComponent } from './evento/view/view.component';
 
 export const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'login', component: SigninComponent },
   { path: 'register', component: SignupComponent },
   { path: 'profile', component: UserProfileComponent },

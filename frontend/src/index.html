@@ -1,13 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Frontend</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Hoverrr</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    
+    <app-root></app-root>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        cierraMenu();
+      });
+    
+      //Cierrar el menu al hacer click en un item
+      function cierraMenu() {
+        const menuBox = document.getElementById("menuBox");
+        const menuToggle = document.getElementById("menu__toggle");
+        const menuItems = menuBox.querySelectorAll(".menu__item");
+    
+        menuItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            menuToggle.checked = false;
+          });
+        });
+      }
+    </script>
+  </body>
 </html>

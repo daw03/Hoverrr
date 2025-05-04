@@ -36,7 +36,7 @@ export class EventoService {
 
   // Actualizar
   update(id: string, evento: FormData): Observable<any> {
-    return this.http.put(`http://127.0.0.1:8000/api/eventos/${id}`, {evento});
+    return this.http.put(`http://127.0.0.1:8000/api/eventos/${id}`, evento);
   }
 
 }

@@ -65,7 +65,7 @@ export class CreateEventoComponent implements OnInit {
           (result: any) => {
             console.log('Evento creado exitosamente:', result);
             this.eventoForm.reset();
-            this.router.navigate(['/eventos']);
+            this.router.navigate(['/evento/index']);
           },
           (error: HttpErrorResponse) => {
             this.errors = error.error;

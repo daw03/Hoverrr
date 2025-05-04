@@ -21,7 +21,7 @@ export class Usuario {
   styleUrls: ['./view.component.css'],
 })
 export class ViewEventoComponent implements OnInit {
-  evento!: Evento;
+  evento: Evento | null = null; // Inicializar como null
   usuario: Usuario = new Usuario();
   isSignedIn = false;
   errorMessage: any;
@@ -69,7 +69,7 @@ export class ViewEventoComponent implements OnInit {
     if (id) {
       this.eventoService.delete(id.toString()).subscribe(
         () => {
-          this.router.navigate(['/eventos']); 
+          this.router.navigate(['/evento/index']);
         },
         (error) => {
           this.errores = error.error.error;

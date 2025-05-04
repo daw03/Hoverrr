@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router'; // Importa RouterModule
 import { TokenService } from './shared/token.service';
 import { AuthStateService } from './shared/auth-state.service';
-import { RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -10,7 +9,7 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterModule], // Añade RouterModule a las imports
 })
 export class AppComponent implements OnInit {
   title = 'Hoverrr';
