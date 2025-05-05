@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EventoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(\App\Http\Controllers\EventoController::class)->group(function () {
+Route::controller(EventoController::class)->group(function () {
     Route::get('eventos', 'index'); // Listar todos los eventos
     Route::get('eventos/mine', 'listmine'); // Listar eventos del usuario autenticado
     Route::get('eventos/{id}', 'show'); // Ver detalles de un evento específico
@@ -36,4 +39,19 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::get('me', 'me');
+});
+
+Route::controller(CategoriaController::class)->group(function () {
+    Route::get('categorias', 'index'); 
+    Route::post('categorias', 'store'); 
+    Route::put('categorias/{id}', 'update');
+    Route::delete('categorias/{id}', 'destroy');
+    Route::get('categorias/{id}', 'show');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('users', 'index'); 
+    Route::get('users/{id}', 'show');
+    Route::put('users/{id}', 'update'); 
+    Route::delete('users/{id}', 'destroy');
 });

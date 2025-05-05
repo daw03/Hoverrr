@@ -1,0 +1,36 @@
+<div class="auth-wrapper m-3">
+  <form class="form-signin" [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+    <h3 class="h3 mb-3 font-weight-normal text-center">Crear Categoría</h3>
+
+    <div *ngIf="errors" class="alert alert-danger">
+      <ul>
+        <li *ngFor="let error of errors | keyvalue">
+          <strong>{{ error.key }}:</strong> {{ error.value }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre de la Categoría</label>
+      <input type="text" class="form-control m-2" formControlName="nombre" />
+      <div
+        *ngIf="
+          categoriaForm.get('nombre')?.invalid &&
+          (categoriaForm.get('nombre')?.dirty ||
+            categoriaForm.get('nombre')?.touched)
+        "
+        class="text-danger"
+      >
+        El nombre es obligatorio.
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-block btn-primary"
+      [disabled]="categoriaForm.invalid"
+    >
+      Crear Categoría
+    </button>
+  </form>
+</div>

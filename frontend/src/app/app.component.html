@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="hamburger-menu">
       <input id="menu__toggle" type="checkbox" />
-      <label class="menu__btn" for="menu__toggle" style="z-index: 2;">
+      <label class="menu__btn" for="menu__toggle" style="z-index: 2">
         <span></span>
       </label>
 
@@ -10,13 +10,19 @@
         <li><a class="menu__item" routerLink="">Inicio</a></li>
         <li><a class="menu__item" routerLink="/evento/index">Eventos</a></li>
         <li>
-          <a class="menu__item" routerLink="/evento/mine">Mis eventos</a>
+          <a *ngIf="isSignedIn" class="menu__item" routerLink="/evento/mine"
+            >Mis eventos</a
+          >
         </li>
         <li>
-          <a class="menu__item" routerLink="/evento/create">Crear Eventos</a>
+          <a *ngIf="isSignedIn" class="menu__item" routerLink="/evento/create"
+            >Crear Eventos</a
+          >
         </li>
         <li>
-          <a class="menu__item" routerLink="/register">Registrate</a>
+          <a *ngIf="!isSignedIn" class="menu__item" routerLink="/register"
+            >Registrate</a
+          >
         </li>
       </ul>
     </div>
@@ -30,13 +36,55 @@
     </div>
 
     <button
+      *ngIf="!isSignedIn"
       class="btn d-flex align-items-center"
       style="background-color: #d9d9d9"
-      routerLink="login"
+      routerLink="/login"
     >
       <span class="me-2"> <b>Login</b></span>
       <i class="bi bi-person-circle fs-4"></i>
     </button>
+
+    <div *ngIf="isSignedIn" class="dropdown">
+      <button
+        class="btn d-flex align-items-center"
+        style="background-color: #d9d9d9"
+        type="button"
+        id="dropdownMenuButton"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <span class="me-2">
+          <b>{{ user.name }}</b></span
+        >
+        <i class="bi bi-person-circle fs-4"></i>
+      </button>
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="dropdownMenuButton"
+      >
+        <li><a class="dropdown-item" routerLink="/profile">Perfil</a></li>
+        <li *ngIf="this.user.role_id == 2">
+          <button
+            class="dropdown-item"
+            routerLink="/categoria/index"
+            style="background-color: #39c94d; color: black"
+          >
+            Admin Panel
+          </button>
+        </li>
+
+        <li>
+          <button
+            class="dropdown-item"
+            (click)="signOut()"
+            style="background-color: #f35353; color: black"
+          >
+            Cerrar Sesión
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -44,7 +92,7 @@
 
 <footer
   class="pt-4"
-  style="background-color: #d9d9d9; position: relative; z-index: 0;"
+  style="background-color: #d9d9d9; position: relative; z-index: 0"
 >
   <div class="container">
     <div

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './../../shared/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Importar CommonModule si es necesario
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],  // Aquí está correctamente configurado
+  imports: [ReactiveFormsModule, FormsModule, CommonModule], 
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })

@@ -20,11 +20,10 @@ export class TokenService {
     if (token) {
       const payload = this.payload(token);
       if (payload) {
-        // Verificar si el 'iss' está en el conjunto de emisores válidos
         return Object.values(this.issuer).indexOf(payload.iss) > -1;
       }
     }
-    return false; // Si no hay token o no es válido, devuelve false
+    return false; 
   }
 
   payload(token: any) {

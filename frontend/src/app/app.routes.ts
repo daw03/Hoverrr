@@ -8,6 +8,11 @@ import { EditEventoComponent } from './evento/edit/edit.component';
 import { IndexComponent } from './evento/index/index.component';
 import { MineComponent } from './evento/mine/mine.component';
 import { ViewEventoComponent } from './evento/view/view.component';
+import { IndexCategoriaComponent } from './admin/categorias/index/index.component';
+import { CreateCategoriaComponent } from './admin/categorias/create/create.component';
+import { EditCategoriaComponent } from './admin/categorias/edit/edit.component';
+import { IndexUserComponent } from './admin/user/index/index.component';
+import { EditUserComponent } from './admin/user/edit/edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,4 +24,9 @@ export const routes: Routes = [
   { path: 'evento/index', component: IndexComponent },
   { path: 'evento/mine', component: MineComponent },
   { path: 'evento/view/:id', component: ViewEventoComponent },
+  { path: 'categoria/index', component: IndexCategoriaComponent },
+  { path: 'categoria/create', component: CreateCategoriaComponent },
+  { path: 'categoria/edit/:id', component: EditCategoriaComponent },
+  { path: 'user/index', component: IndexUserComponent },
+  { path: 'user/edit/:id', component: EditUserComponent },
 ];

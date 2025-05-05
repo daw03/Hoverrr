@@ -1,0 +1,68 @@
+<div class="auth-wrapper m-3">
+  <form class="form-signin" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <h3 class="h3 mb-3 font-weight-normal text-center">Editar Usuario</h3>
+
+    <div *ngIf="errors" class="alert alert-danger">
+      <ul>
+        <li *ngFor="let error of errors | keyvalue">
+          <strong>{{ error.key }}:</strong> {{ error.value }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" class="form-control m-2" formControlName="name" />
+      <div
+        *ngIf="
+          userForm.get('name')?.invalid &&
+          (userForm.get('name')?.dirty || userForm.get('name')?.touched)
+        "
+        class="text-danger"
+      >
+        El nombre es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control m-2" formControlName="email" />
+      <div
+        *ngIf="
+          userForm.get('email')?.invalid &&
+          (userForm.get('email')?.dirty || userForm.get('email')?.touched)
+        "
+        class="text-danger"
+      >
+        El email es obligatorio y debe ser válido.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Rol</label>
+      <select class="form-control m-2" formControlName="role_id">
+        <option value="" disabled>Selecciona un rol</option>
+        <option value="0">Usuario</option>
+        <option value="1">Organizador de eventos</option>
+        <option value="2">Administrador</option>
+      </select>
+      <div
+        *ngIf="
+          userForm.get('role_id')?.invalid &&
+          (userForm.get('role_id')?.dirty || userForm.get('role_id')?.touched)
+        "
+        class="text-danger"
+      >
+        El rol es obligatorio.
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-block btn-primary"
+      [disabled]="userForm.invalid"
+    >
+      Guardar Cambios
+    </button>
+  </form>
+</div>
