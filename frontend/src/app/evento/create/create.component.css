@@ -1,0 +1,11 @@
+.login-button {
+  background-color: #37ffd7;
+  border-color: #37ffd7;
+  color: #000;
+}
+
+.login-button:hover {
+  background-color: #29c4a3;
+  border-color: #29c4a3;
+  color: #000; /* O el color de texto que prefieras en el hover */
+}

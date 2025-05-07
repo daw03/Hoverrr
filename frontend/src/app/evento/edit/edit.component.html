@@ -1,151 +1,187 @@
-<div class="auth-wrapper m-3">
-  <form class="form-signin" [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
-    <h3 class="h3 mb-3 font-weight-normal text-center">Editar Evento</h3>
-
-    <div *ngIf="errors" class="alert alert-danger">
-      <ul>
-        <li *ngFor="let error of errors | keyvalue">
-          <strong>{{ error.key }}:</strong> {{ error.value }}
-        </li>
-      </ul>
-    </div>
-
-    <div class="form-group">
-      <label>Nombre</label>
-      <input type="text" class="form-control m-2" formControlName="nombre" />
-      <div
-        *ngIf="
-          eventoForm.get('nombre')?.invalid &&
-          (eventoForm.get('nombre')?.dirty || eventoForm.get('nombre')?.touched)
-        "
-        class="text-danger"
-      >
-        El nombre es obligatorio.
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="margin-top: 1%; margin-bottom: 1%"
+>
+  <div
+    class="card p-4 shadow rounded-0"
+    style="background-color: #d9d9d9; width: 800px"
+  >
+    <h3 class="text-center mb-4">Editar Evento</h3>
+    <form class="form-signin" [formGroup]="eventoForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="errors" class="alert alert-danger mt-3 rounded-0">
+        <ul>
+          <li *ngFor="let error of errors | keyvalue">
+            <strong>{{ error.key }}:</strong> {{ error.value }}
+          </li>
+        </ul>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Descripción</label>
-      <input
-        type="text"
-        class="form-control m-2"
-        formControlName="descripcion"
-      />
-      <div
-        *ngIf="
-          eventoForm.get('descripcion')?.invalid &&
-          (eventoForm.get('descripcion')?.dirty ||
-            eventoForm.get('descripcion')?.touched)
-        "
-        class="text-danger"
-      >
-        La descripción es obligatoria.
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="nombre"
+          formControlName="nombre"
+        />
+        <div
+          *ngIf="
+            eventoForm.get('nombre')?.invalid &&
+            (eventoForm.get('nombre')?.dirty ||
+              eventoForm.get('nombre')?.touched)
+          "
+          class="text-danger"
+        >
+          El nombre es obligatorio.
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Fecha del Evento</label>
-      <input
-        type="date"
-        class="form-control m-2"
-        formControlName="fecha_evento"
-      />
-      <div
-        *ngIf="
-          eventoForm.get('fecha_evento')?.invalid &&
-          (eventoForm.get('fecha_evento')?.dirty ||
-            eventoForm.get('fecha_evento')?.touched)
-        "
-        class="text-danger"
-      >
-        La fecha del evento es obligatoria.
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="descripcion"
+          formControlName="descripcion"
+        />
+        <div
+          *ngIf="
+            eventoForm.get('descripcion')?.invalid &&
+            (eventoForm.get('descripcion')?.dirty ||
+              eventoForm.get('descripcion')?.touched)
+          "
+          class="text-danger"
+        >
+          La descripción es obligatoria.
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Categoría</label>
-      <select
-        formControlName="categoria_id"
-        id="categoria_id"
-        class="form-select m-2 w-25"
-      >
-        <option value="" disabled>Selecciona una categoría</option>
-        <option value="1">Categoría 1</option>
-      </select>
-      <div
-        *ngIf="
-          eventoForm.get('categoria_id')?.invalid &&
-          (eventoForm.get('categoria_id')?.dirty ||
-            eventoForm.get('categoria_id')?.touched)
-        "
-        class="text-danger"
-      >
-        La categoría es obligatoria.
+      <div class="mb-3">
+        <label for="fecha_evento" class="form-label">Fecha del Evento</label>
+        <input
+          type="date"
+          class="form-control rounded-0"
+          id="fecha_evento"
+          formControlName="fecha_evento"
+        />
+        <div
+          *ngIf="
+            eventoForm.get('fecha_evento')?.invalid &&
+            (eventoForm.get('fecha_evento')?.dirty ||
+              eventoForm.get('fecha_evento')?.touched)
+          "
+          class="text-danger"
+        >
+          La fecha del evento es obligatoria.
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Ubicación</label>
-      <input type="text" class="form-control m-2" formControlName="ubicacion" />
-      <div
-        *ngIf="
-          eventoForm.get('ubicacion')?.invalid &&
-          (eventoForm.get('ubicacion')?.dirty ||
-            eventoForm.get('ubicacion')?.touched)
-        "
-        class="text-danger"
-      >
-        La ubicación es obligatoria.
+      <div class="mb-3">
+        <label for="categoria_id" class="form-label">Categoría</label>
+        <select
+          formControlName="categoria_id"
+          id="categoria_id"
+          class="form-select rounded-0"
+        >
+          <option value="" disabled>Selecciona una categoría</option>
+          <option value="1">Categoría 1</option>
+        </select>
+        <div
+          *ngIf="
+            eventoForm.get('categoria_id')?.invalid &&
+            (eventoForm.get('categoria_id')?.dirty ||
+              eventoForm.get('categoria_id')?.touched)
+          "
+          class="text-danger"
+        >
+          La categoría es obligatoria.
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Premios (Opcional)</label>
-      <input type="text" class="form-control m-2" formControlName="premios" />
-    </div>
-
-    <div class="form-group form-check">
-      <input
-        type="checkbox"
-        class="form-check-input m-2"
-        formControlName="inscripcion_abierta"
-      />
-      <label class="form-check-label">Inscripción Abierta</label>
-    </div>
-
-    <div class="form-group">
-      <label>Precio (Opcional)</label>
-      <input type="number" class="form-control m-2" formControlName="precio" />
-    </div>
-
-    <div>
-      <label>Imagen (Opcional)</label>
-      <div *ngIf="imageUrl">
-        <img [src]="imageUrl" alt="Imagen actual" style="max-height: 100px" />
+      <div class="mb-3">
+        <label for="ubicacion" class="form-label">Ubicación</label>
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="ubicacion"
+          formControlName="ubicacion"
+        />
+        <div
+          *ngIf="
+            eventoForm.get('ubicacion')?.invalid &&
+            (eventoForm.get('ubicacion')?.dirty ||
+              eventoForm.get('ubicacion')?.touched)
+          "
+          class="text-danger"
+        >
+          La ubicación es obligatoria.
+        </div>
       </div>
-      <input
-        type="file"
-        class="form-control m-2"
-        formControlName="file"
-        (change)="metoImagen($event)"
-      />
-      <div
-        *ngIf="
-          eventoForm.get('file')?.invalid &&
-          (eventoForm.get('file')?.dirty || eventoForm.get('file')?.touched)
-        "
-        class="text-danger"
-      >
-        La imagen es obligatoria.
-      </div>
-    </div>
 
-    <button
-      type="submit"
-      class="btn btn-block btn-primary"
-      [disabled]="eventoForm.invalid"
-    >
-      Guardar Cambios
-    </button>
-  </form>
+      <div class="mb-3">
+        <label for="premios" class="form-label">Premios (Opcional)</label>
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="premios"
+          formControlName="premios"
+        />
+      </div>
+
+      <div class="form-check mb-3">
+        <input
+          type="checkbox"
+          class="form-check-input rounded-0"
+          id="inscripcion_abierta"
+          formControlName="inscripcion_abierta"
+        />
+        <label class="form-check-label" for="inscripcion_abierta"
+          >Inscripción Abierta</label
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="precio" class="form-label">Precio (Opcional)</label>
+        <input
+          type="number"
+          class="form-control rounded-0"
+          id="precio"
+          formControlName="precio"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="file" class="form-label">Imagen (Opcional)</label>
+        <div *ngIf="imageUrl">
+          <img [src]="imageUrl" alt="Imagen actual" style="max-height: 100px" />
+        </div>
+        <input
+          type="file"
+          class="form-control rounded-0"
+          id="file"
+          formControlName="file"
+          (change)="metoImagen($event)"
+        />
+        <div
+          *ngIf="
+            eventoForm.get('file')?.invalid &&
+            (eventoForm.get('file')?.dirty || eventoForm.get('file')?.touched)
+          "
+          class="text-danger"
+        >
+          La imagen es obligatoria.
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block rounded-0 login-button"
+          [disabled]="eventoForm.invalid"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

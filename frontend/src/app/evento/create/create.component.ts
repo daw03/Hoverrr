@@ -1,11 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokenService } from '../../shared/token.service';
 import { EventoService } from '../../evento/evento.service';
 import { Evento } from '../../evento/evento';
+import { AuthService } from '../../shared/auth.service';
+import { AuthStateService } from '../../shared/auth-state.service';
+import { User } from '../../app.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -18,16 +28,26 @@ export class CreateEventoComponent implements OnInit {
   eventoForm!: FormGroup;
   errors: any = null;
   evento!: Evento;
-  isSignedIn!: boolean;
   selectedImage!: any;
+  isSignedIn!: boolean;
+  user: User = new User();
+  private destroy$ = new Subject<void>();
 
   constructor(
+    private authState: AuthStateService,
+    private authService: AuthService,
     public router: Router,
     public eventoService: EventoService,
     public token: TokenService
   ) {}
 
   ngOnInit(): void {
+    /* this.checkAuthAndLoadUser();
+
+    if (this.user && this.user.role_id.toString() == '0') {
+      this.router.navigate(['/evento/index']);
+    } */
+
     this.eventoForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       descripcion: new FormControl('', [Validators.required]),
@@ -41,6 +61,35 @@ export class CreateEventoComponent implements OnInit {
     });
     this.isSignedIn = this.token.isLoggedIn();
   }
+
+   /* private checkAuthAndLoadUser() {
+    if (this.token.isLoggedIn()) {
+      this.authState.setAuthState(true);
+      this.getUserLoggedIn();
+    } else {
+      this.router.navigate(['/evento/index']);
+    }
+  }
+
+  private getUserLoggedIn() {
+    this.authService
+      .profileUser()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any) => {
+          this.user = data;
+          if (this.user.role_id.toString() == '0') {
+            this.router.navigate(['/evento/index']);
+          }
+          //console.log(this.user);
+        },
+        error: (error) => {
+          console.error('Error al cargar el perfil del usuario', error);
+          this.authState.setAuthState(false);
+          this.token.removeToken();
+        },
+      });
+  } */
 
   onSubmit() {
     if (this.eventoForm.valid) {
