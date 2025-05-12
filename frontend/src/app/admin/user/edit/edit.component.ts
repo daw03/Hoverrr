@@ -51,7 +51,7 @@ export class EditUserComponent implements OnInit {
       (error: HttpErrorResponse) => {
         this.errors = error.error;
         console.error('Error al cargar usuario:', error);
-        this.router.navigate(['/user/index']);
+        this.router.navigate(['admin/user/index']);
       }
     );
   }
@@ -62,7 +62,7 @@ export class EditUserComponent implements OnInit {
       this.userService.update(this.userId, updatedUser).subscribe(
         (result: User) => {
           console.log('Usuario actualizado:', result);
-          this.router.navigate(['/user/index']);
+          this.router.navigate(['admin/user/index']);
         },
         (error: HttpErrorResponse) => {
           this.errors = error.error;

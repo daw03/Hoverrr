@@ -77,8 +77,6 @@ class EventoController extends Controller
     }
     public function update(Request $request, $id)
     {
-        
-        
         try {
             $this->validate($request, [
                 'nombre' => 'required|max:255',

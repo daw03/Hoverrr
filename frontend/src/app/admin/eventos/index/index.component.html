@@ -1,0 +1,38 @@
+<div class="container mt-3">
+  <h2 class="text-center mb-3">Lista de Eventos</h2>
+
+  <div *ngIf="errors" class="alert alert-danger">
+    <ul>
+      <li *ngFor="let error of errors | keyvalue">
+        <strong>{{ error.key }}:</strong> {{ error.value }}
+      </li>
+    </ul>
+  </div>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>User ID</th>
+        <th>Borrar</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let evento of eventos">
+        <td>{{ evento.id }}</td>
+        <td>{{ evento.nombre }}</td>
+        <td>{{ evento.user_id }}</td>
+        <td>
+          <button class="btn btn-danger" *ngIf="evento.id" (click)="onDelete(evento.id)">Borrar</button>
+        </td>
+        <td>
+          <button class="btn btn-primary" *ngIf="evento.id" (click)="onEdit(evento.id)">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- <a routerLink="/evento/create" class="btn btn-success mt-3">Crear Evento</a> -->
+</div>

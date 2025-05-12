@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: any) => {
           this.user = data;
-          console.log(this.user);
+          //console.log(this.user); // Usuario
         },
         error: (error) => {
           console.error('Error al cargar el perfil del usuario', error);

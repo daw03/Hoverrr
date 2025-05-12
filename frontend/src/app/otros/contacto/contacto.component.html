@@ -1,0 +1,42 @@
+<div>
+  <h1>Contacto</h1>
+
+  <p>
+    ¿Tienes alguna pregunta, sugerencia o simplemente quieres saludarnos? Estamos aquí para ayudarte. Puedes contactarnos en el siguiente horario o usar el formulario para enviarnos un mensaje.
+  </p>
+
+  <ul>
+    <li><strong>Teléfono:</strong> +34 941 123 456</li>
+    <li><strong>Dirección:</strong> Calle de los Drones, 42, Logroño, España</li>
+    <li><strong>Horario de atención:</strong> Lunes a Viernes de 9:00 a 18:00</li>
+  </ul>
+
+  <h2>Envíanos un mensaje</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" formControlName="nombre" />
+      <div *ngIf="contactForm.controls['nombre'].invalid && contactForm.controls['nombre'].touched">
+        <p style="color: red;">El nombre es requerido.</p>
+      </div>
+    </div>
+
+    <div>
+      <label for="texto">Mensaje:</label>
+      <textarea id="texto" formControlName="texto"></textarea>
+      <div *ngIf="contactForm.controls['texto'].invalid && contactForm.controls['texto'].touched">
+        <p style="color: red;">El mensaje es requerido.</p>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="contactForm.invalid">Enviar Mensaje</button>
+
+    <div *ngIf="mensajeEnviado" style="color: green; margin-top: 10px;">
+      <p>¡Mensaje enviado correctamente!</p>
+    </div>
+
+    <div *ngIf="errorEnvio" style="color: red; margin-top: 10px;">
+      <p>Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.</p>
+    </div>
+  </form>
+</div>

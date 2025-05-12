@@ -38,7 +38,7 @@ export class IndexCategoriaComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(['/categoria/edit', id]);
+    this.router.navigate(['admin/categoria/edit', id]);
   }
 
   onDelete(id: number) {

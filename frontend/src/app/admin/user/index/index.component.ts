@@ -51,7 +51,7 @@ export class IndexUserComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(['/user/edit', id]);
+    this.router.navigate(['admin/user/edit', id]);
   }
 
   onDelete(id: number) {

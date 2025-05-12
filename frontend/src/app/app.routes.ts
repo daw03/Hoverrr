@@ -13,6 +13,9 @@ import { CreateCategoriaComponent } from './admin/categorias/create/create.compo
 import { EditCategoriaComponent } from './admin/categorias/edit/edit.component';
 import { IndexUserComponent } from './admin/user/index/index.component';
 import { EditUserComponent } from './admin/user/edit/edit.component';
+import { IndexEventoComponent } from './admin/eventos/index/index.component';
+import { NosotrosComponent } from './otros/nosotros/nosotros.component';
+import { ContactoComponent } from './otros/contacto/contacto.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,9 +27,12 @@ export const routes: Routes = [
   { path: 'evento/index', component: IndexComponent },
   { path: 'evento/mine', component: MineComponent },
   { path: 'evento/view/:id', component: ViewEventoComponent },
-  { path: 'categoria/index', component: IndexCategoriaComponent },
-  { path: 'categoria/create', component: CreateCategoriaComponent },
-  { path: 'categoria/edit/:id', component: EditCategoriaComponent },
-  { path: 'user/index', component: IndexUserComponent },
-  { path: 'user/edit/:id', component: EditUserComponent },
+  { path: 'about', component: NosotrosComponent },
+  { path: 'contacto', component: ContactoComponent },
+  { path: 'admin/categoria/index', component: IndexCategoriaComponent },
+  { path: 'admin/categoria/create', component: CreateCategoriaComponent },
+  { path: 'admin/categoria/edit/:id', component: EditCategoriaComponent },
+  { path: 'admin/user/index', component: IndexUserComponent },
+  { path: 'admin/user/edit/:id', component: EditUserComponent },
+  { path: 'admin/eventos/index', component: IndexEventoComponent },
 ];
