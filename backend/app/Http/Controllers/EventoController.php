@@ -58,7 +58,7 @@ class EventoController extends Controller
 
     public function fileUpload(Request $req, $evento_id = null)
     {
-        $file = $req-> file('file');
+        $file = $req->file('file');
         $fileModel = new EventFile();
         $fileModel->evento_id = $evento_id;
         if ($req->file('file')) {
@@ -70,58 +70,57 @@ class EventoController extends Controller
             if ($res) {
                 return $fileModel;
             } else {
-                return false; 
+                return false;
             }
         }
-        return false; 
+        return false;
     }
     public function update(Request $request, $id)
     {
         try {
+            $user = Auth::user();
+            if (!$user || $user->role_id !== "2") {
+                return response()->json(['error' => 'No tienes permiso de administrador.'], 403);
+            }
+
+            $evento = Evento::query()->findOrFail($id);
+
+            // Validación
             $this->validate($request, [
                 'nombre' => 'required|max:255',
                 'descripcion' => 'required',
                 'fecha_evento' => 'required|date',
                 'categoria_id' => 'required|exists:categorias,id',
-                'ubicacion' => 'required',
-                'premios' => 'nullable',
-                'inscripcion_abierta' => 'boolean',
-                'precio' => 'numeric',
-                'file' => 'nullable|file'
+                'ubicacion' => 'required|string',
+                'precio' => 'nullable|numeric',
+                'premios' => 'nullable|string',
+                'inscripcion_abierta' => 'nullable|boolean',
+                'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            $evento = Evento::findOrFail($id);
-
-            //Compruebo el user
-            $user = Auth::user();
-            if ($evento->user_id !== $user->id or $user->rol_id == 3) {
-                return response()->json(['error' => 'No tienes permisos para actualizar este evento.'], 403);
+            // Asociar categoría si cambia
+            if ($request->has('categoria_id')) {
+                $categoria = Categoria::findOrFail($request->input('categoria_id'));
+                $evento->categoria()->associate($categoria);
             }
 
-            $evento->nombre = $request->input('nombre');
-            $evento->descripcion = $request->input('descripcion');
-            $evento->fecha_evento = $request->input('fecha_evento');
-            $evento->categoria_id = $request->input('categoria_id');
-            $evento->ubicacion = $request->input('ubicacion');
-            $evento->premios = $request->input('premios');
-            $evento->inscripcion_abierta = $request->input('inscripcion_abierta', true);
-            $evento->precio = $request->input('precio', 0);
-
+            // Actualizar los campos del evento
+            $evento->fill($request->except('file'));
             $evento->save();
 
-            // Si hay un nuevo archivo, lo subimos
+            // Si se ha subido nueva imagen
             if ($request->hasFile('file')) {
+                $evento->file()->delete(); // borra imagen antigua
                 $this->fileUpload($request, $evento->id);
             }
 
-            return response()->json([
-                'message' => 'Evento actualizado correctamente',
-                'evento' => $evento
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json($evento, 200);
+
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
     public function delete(Request $request, $id)
     {
         try {
@@ -143,7 +142,7 @@ class EventoController extends Controller
     public function index()
     {
         try {
-            $eventos = Evento::with('file','user','categoria')->get(); //Con file
+            $eventos = Evento::with('file', 'user', 'categoria')->get(); //Con file
             //$eventos = Evento::with('user', 'categoria')->get(); //Sin file
             return $eventos;
         } catch (\Exception $exception) {

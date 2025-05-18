@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('evento_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('evento_id')->references('id')->on('eventos')->onDelete('cascade');
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }
