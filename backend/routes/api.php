@@ -55,6 +55,7 @@ Route::controller(CategoriaController::class)->group(function () {
 Route::controller(UserController::class)->group(function () {
     Route::get('users', 'index'); 
     Route::get('users/{id}', 'show');
+    Route::put('usersAdmin/{id}', 'updateAdmin'); 
     Route::put('users/{id}', 'update'); 
     Route::delete('users/{id}', 'destroy');
 });

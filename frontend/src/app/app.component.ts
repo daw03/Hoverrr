@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { TokenService } from './shared/token.service';
 import { AuthService } from './shared/auth.service';
 import { AuthStateService } from './shared/auth-state.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 export class User {
   id!: number;
@@ -40,6 +41,15 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.checkAuthAndLoadUser();
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      if (this.isSignedIn) {
+        this.getUserLoggedIn();
+      }
+    });
   }
 
   ngOnDestroy(): void {

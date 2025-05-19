@@ -20,7 +20,7 @@ export class UserService {
   }
 
   update(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+    return this.http.put<User>(`${this.apiUrl}Admin/${id}`, user);
   }
 
   delete(id: number): Observable<void> {

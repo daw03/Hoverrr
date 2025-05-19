@@ -1,0 +1,18 @@
+.custom-form {
+  background-color: #d9d9d9; /* Color de fondo similar al card del create */
+  padding: 20px;
+  border-radius: 0;
+  width: 800px;
+}
+
+.create-button {
+  background-color: #37ffd7; /* Turquesa clarito */
+  border-color: #37ffd7;
+  color: #000;
+}
+
+.create-button:hover {
+  background-color: #29c4a3;
+  border-color: #29c4a3;
+  color: #000;
+}

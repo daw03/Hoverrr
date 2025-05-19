@@ -16,12 +16,14 @@ import { EditUserComponent } from './admin/user/edit/edit.component';
 import { IndexEventoComponent } from './admin/eventos/index/index.component';
 import { NosotrosComponent } from './otros/nosotros/nosotros.component';
 import { ContactoComponent } from './otros/contacto/contacto.component';
+import { UserProfileEditComponent } from './components/user-profile-edit/user-profile-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: SigninComponent },
   { path: 'register', component: SignupComponent },
   { path: 'profile', component: UserProfileComponent },
+  { path: 'profile/edit', component: UserProfileEditComponent },
   { path: 'evento/create', component: CreateEventoComponent },
   { path: 'evento/edit/:id', component: EditEventoComponent },
   { path: 'evento/index', component: IndexComponent },

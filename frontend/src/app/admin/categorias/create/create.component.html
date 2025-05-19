@@ -1,8 +1,8 @@
 <div class="auth-wrapper m-3">
-  <form class="form-signin" [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+  <form class="form-signin custom-form" [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
     <h3 class="h3 mb-3 font-weight-normal text-center">Crear Categoría</h3>
 
-    <div *ngIf="errors" class="alert alert-danger">
+    <div *ngIf="errors" class="alert alert-danger rounded-0">
       <ul>
         <li *ngFor="let error of errors | keyvalue">
           <strong>{{ error.key }}:</strong> {{ error.value }}
@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <label>Nombre de la Categoría</label>
-      <input type="text" class="form-control m-2" formControlName="nombre" />
+      <input type="text" class="form-control m-2 rounded-0" formControlName="nombre" />
       <div
         *ngIf="
           categoriaForm.get('nombre')?.invalid &&
@@ -27,7 +27,7 @@
 
     <button
       type="submit"
-      class="btn btn-block btn-primary"
+      class="btn btn-block btn-primary rounded-0 create-button"
       [disabled]="categoriaForm.invalid"
     >
       Crear Categoría

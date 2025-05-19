@@ -48,7 +48,7 @@ export class IndexComponent implements OnInit {
       if (this.isSignedIn) {
         this.authService.profileUser().subscribe((data: any) => {
           this.user = data;
-          console.log(data);
+          //console.log(data);
         });
       }
     });

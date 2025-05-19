@@ -40,7 +40,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function updateAdmin(Request $request, $id)
     {
         $actualUser = Auth::user(); 
         if ($actualUser->role_id !== "2" && $actualUser->id != $id) { 
@@ -62,6 +62,30 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'user' => $user
+        ], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $actualUser = Auth::user(); 
+        $user = User::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
         $user->save();
 
         return response()->json([

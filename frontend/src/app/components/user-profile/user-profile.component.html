@@ -1,15 +1,34 @@
-<div class="container" *ngIf="UserProfile">
-  <div class="card inner-main">
-    <div class="card-header">
-      User Profile
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="margin-top: 1%; margin-bottom: 1%"
+  *ngIf="UserProfile"
+>
+  <div
+    class="card p-4 shadow rounded-0"
+    style="background-color: #ffffff; display: flex; flex-direction: row; max-width: 95%;"
+  >
+    <div style="flex: 1; padding-right: 20px; min-width: 0;">
+      <h3 class="text-start mb-3">Perfil de Usuario</h3>
+      <div>
+        <p class="mb-2">
+          <strong>Nombre:</strong> {{ UserProfile.name }}
+        </p>
+        <p class="mb-3">
+          <strong>Email:</strong> {{ UserProfile.email }}
+        </p>
+        <p>
+          <button routerLink="/profile/edit/" class="btn btn-primary rounded-0">
+            Editar perfil
+          </button>
+        </p>
+      </div>
     </div>
-    <div class="card-body">
-      <p class="card-text">Name:
-        <strong>{{ UserProfile.name }}</strong>
-      </p>
-      <p class="card-text">Email:
-        <strong>{{ UserProfile.email }}</strong>
-      </p>
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center; min-width: 0;">
+      <img
+        src="/hombredron.png"
+        alt="Imagen de perfil"
+        style="max-width: 100%; height: auto; object-fit: contain;"
+      />
     </div>
   </div>
 </div>
