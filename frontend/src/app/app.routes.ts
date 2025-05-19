@@ -17,6 +17,7 @@ import { IndexEventoComponent } from './admin/eventos/index/index.component';
 import { NosotrosComponent } from './otros/nosotros/nosotros.component';
 import { ContactoComponent } from './otros/contacto/contacto.component';
 import { UserProfileEditComponent } from './components/user-profile-edit/user-profile-edit.component';
+import { AdminModule } from './admin/admin.module';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,10 +32,14 @@ export const routes: Routes = [
   { path: 'evento/view/:id', component: ViewEventoComponent },
   { path: 'about', component: NosotrosComponent },
   { path: 'contacto', component: ContactoComponent },
-  { path: 'admin/categoria/index', component: IndexCategoriaComponent },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+  },
+  /*{ path: 'admin/categoria/index', component: IndexCategoriaComponent },
   { path: 'admin/categoria/create', component: CreateCategoriaComponent },
   { path: 'admin/categoria/edit/:id', component: EditCategoriaComponent },
   { path: 'admin/user/index', component: IndexUserComponent },
   { path: 'admin/user/edit/:id', component: EditUserComponent },
-  { path: 'admin/eventos/index', component: IndexEventoComponent },
+  { path: 'admin/eventos/index', component: IndexEventoComponent },*/
 ];

@@ -87,7 +87,11 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; 
+}
+
+.main-content {
+  flex: 1; 
 }
 
 router-outlet {
@@ -96,4 +100,12 @@ router-outlet {
 
 footer {
   width: 100%;
+}
+
+.organizador{
+  color: #7e2a2a;
+}
+
+.admin{
+  color: #4c7e2a;
 }

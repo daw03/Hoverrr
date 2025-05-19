@@ -16,8 +16,27 @@
             >
           </li>
           <li>
-            <a *ngIf="isSignedIn" class="menu__item" routerLink="/evento/create"
+            <a
+              *ngIf="this.user.role_id >= 1"
+              class="menu__item organizador"
+              routerLink="/evento/create"
               >Crear Eventos</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="this.user.role_id >= 1"
+              class="menu__item organizador"
+              routerLink="/evento/create"
+              >Mis eventos creados</a
+            >
+          </li>
+          <li>
+            <a
+              *ngIf="this.user.role_id == 2"
+              class="menu__item admin"
+              routerLink="/admin"
+              >Admin Panel</a
             >
           </li>
           <li>
@@ -65,16 +84,6 @@
           aria-labelledby="dropdownMenuButton"
         >
           <li><a class="dropdown-item" routerLink="/profile">Perfil</a></li>
-          <li *ngIf="this.user.role_id == 2">
-            <button
-              class="dropdown-item"
-              routerLink="/categoria/index"
-              style="background-color: #39c94d; color: black"
-            >
-              Admin Panel
-            </button>
-          </li>
-
           <li>
             <button
               class="dropdown-item"
@@ -89,12 +98,12 @@
     </div>
   </nav>
 
-  <router-outlet></router-outlet>
+  <!-- Componetes -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
 
-  <footer
-    class="pt-4"
-    style="background-color: #868686; z-index: 0"
-  >
+  <footer class="pt-4" style="background-color: #868686; z-index: 0">
     <div class="container">
       <div
         class="row mt-4 text-center"
@@ -106,12 +115,16 @@
               <a routerLink="" class="text-dark text-decoration-none">Inicio</a>
             </li>
             <li>
-              <a routerLink="/evento/index" class="text-dark text-decoration-none"
+              <a
+                routerLink="/evento/index"
+                class="text-dark text-decoration-none"
                 >Eventos</a
               >
             </li>
             <li>
-              <a routerLink="/evento/mine" class="text-dark text-decoration-none"
+              <a
+                routerLink="/evento/mine"
+                class="text-dark text-decoration-none"
                 >Mis eventos</a
               >
             </li>
