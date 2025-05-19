@@ -170,28 +170,61 @@ class EventoController extends Controller
             return response()->json(['error' => $exception->getMessage()]);
         }
     }
+
     public function inscribirse(Request $request, $id)
     {
         try {
-            // Busca el evento por ID
+            $ok = false;
             $evento = Evento::findOrFail($id);
             $user = Auth::user();
             $user_id = [$user->id];
 
-            // Verifica si el evento tiene la inscripción abierta
             if (!$evento->inscripcion_abierta) {
                 return response()->json(['error' => 'La inscripción para este evento está cerrada.'], 403);
             }
 
-            // Verifica si el usuario ya está inscrito en el evento
-            if ($evento->usuarios()->where('user_id', $user->id)->exists()) {
-                return response()->json(['error' => 'Ya estás inscrito en este evento.'], 403);
+            // Compruebo que el usuario no se haya inscrito antes
+            if ($evento->inscripciones()->where('user_id', $user->id)->exists()) {
+                return response()->json(['error' => 'Ya te has inscrito a este evento.'], 403);
             }
 
-            // Inscribe al usuario
-            $evento->usuarios()->attach($user_id);
+            $evento->inscripciones()->attach($user_id);
+            $evento->save();
+            return $evento;
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
+        }
+    }
 
-            return response()->json(['message' => 'Inscripción exitosa al evento.'], 200);
+    public function misinscripciones()
+    {
+        try {
+            $user = Auth::user();
+            $eventosInscritos = $user->inscripciones()->with('file', 'user', 'categoria')->get();
+            return response()->json($eventosInscritos);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function cambiarEstadoInscripcion($id)
+    {
+        try {
+            $user = Auth::user();
+            $evento = Evento::findOrFail($id);
+
+            // Solo el admin puede cambiar el estado
+            if ($user->role_id != "2") {
+                return response()->json(['error' => 'No tienes permisos para cambiar el estado de este evento.'], 403);
+            }
+
+            $evento->inscripcion_abierta = $evento->inscripcion_abierta ? 0 : 1;
+            $evento->save();
+
+            return response()->json([
+                'message' => 'Estado de inscripción actualizado correctamente.',
+                'inscripcion_abierta' => $evento->inscripcion_abierta
+            ], 200);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EventoUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,12 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(EventoController::class)->group(function () {
     Route::get('eventos', 'index'); // Listar todos los eventos
     Route::get('eventos/mine', 'listmine'); // Listar eventos del usuario autenticado
+    Route::get('eventos/inscrito', 'misinscripciones'); // Mis eventos inscritos
     Route::get('eventos/{id}', 'show'); // Ver detalles de un evento específico
     Route::post('eventos', 'store'); // Crear nuevo evento
     Route::put('eventos/{id}', 'update'); // Actualizar evento
+    Route::put('eventos/{id}/cambiar-estado', 'cambiarEstadoInscripcion'); // Cambiar estado de inscripción
     Route::delete('eventos/{id}', 'delete'); // Eliminar evento
     Route::post('eventos/{id}/inscribirse', 'inscribirse'); // Inscribirse en evento
-    //Route::post('eventos/{id}/file', 'fileUpload'); // Subir archivo para evento
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -55,6 +57,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('users/{id}', 'show');
     Route::put('users/{id}', 'update'); 
     Route::delete('users/{id}', 'destroy');
+});
+
+Route::controller(EventoUserController::class)->group(function () {
+    Route::delete('/eventos/{eventoId}/usuarios/{userId}/desinscribir', 'destroy'); // Desinscribir usuario de evento
+    Route::put('/eventos/{eventoId}/usuarios/{userId}/estado', 'cambiarEstado'); // Cambiar estado de inscripción
 });
 
 Route::post('sendmail', [EmailController::class, 'send']);
