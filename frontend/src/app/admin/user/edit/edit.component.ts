@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../user.service';
 import { User } from '../user';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -14,15 +15,17 @@ import { User } from '../user';
   imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class EditUserComponent implements OnInit {
+  private apiUrl = 'http://127.0.0.1:8000/api/users';
   userForm!: FormGroup;
   errors: any = null;
-  userId!: number;
   isSignedIn!: boolean;
+  UserProfile!: User; 
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService,
+    private http: HttpClient,
+    public userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -33,14 +36,16 @@ export class EditUserComponent implements OnInit {
     });
     this.isSignedIn = true;
 
-    this.route.params.subscribe((params) => {
-      this.userId = +params['id'];
+    const idRuta = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.userService.show(idRuta).subscribe((data: any) => {
+      this.UserProfile = data;
       this.loadUser();
     });
   }
 
   loadUser() {
-    this.userService.show(this.userId).subscribe(
+    this.userService.show(this.UserProfile.id).subscribe(
       (user: User) => {
         this.userForm.patchValue({
           name: user.name,
@@ -51,7 +56,7 @@ export class EditUserComponent implements OnInit {
       (error: HttpErrorResponse) => {
         this.errors = error.error;
         console.error('Error al cargar usuario:', error);
-        this.router.navigate(['admin/user/index']);
+        this.router.navigate(['/admin/users']);
       }
     );
   }
@@ -59,10 +64,10 @@ export class EditUserComponent implements OnInit {
   onSubmit() {
     if (this.userForm.valid) {
       const updatedUser = this.userForm.value;
-      this.userService.update(this.userId, updatedUser).subscribe(
+      this.userService.update(this.UserProfile.id, updatedUser).subscribe(
         (result: User) => {
           console.log('Usuario actualizado:', result);
-          this.router.navigate(['admin/user/index']);
+          this.router.navigate(['/admin/users']);
         },
         (error: HttpErrorResponse) => {
           this.errors = error.error;

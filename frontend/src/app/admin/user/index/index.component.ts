@@ -10,11 +10,17 @@ import { User } from '../user';
   templateUrl: './index.component.html',
   styleUrl: './index.component.css',
   standalone: true,
-  imports: [CommonModule, ],
+  imports: [CommonModule],
 })
 export class IndexUserComponent implements OnInit {
   users: User[] = [];
+  usersPaginados: User[] = [];
   errors: any = null;
+
+  // Paginación
+  paginaActual: number = 1;
+  itemsPorPagina: number = 5;
+  totalPaginas: number = 1;
 
   constructor(
     private userService: UserService,
@@ -29,12 +35,34 @@ export class IndexUserComponent implements OnInit {
     this.userService.index().subscribe(
       (data: User[]) => {
         this.users = data;
+        this.totalPaginas = Math.ceil(this.users.length / this.itemsPorPagina);
+        this.actualizarPaginacion();
       },
       (error: HttpErrorResponse) => {
         this.errors = error.error;
         console.error('Error al cargar los usuarios:', error);
       }
     );
+  }
+
+  actualizarPaginacion(): void {
+    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
+    const fin = inicio + this.itemsPorPagina;
+    this.usersPaginados = this.users.slice(inicio, fin);
+  }
+
+  siguientePagina(): void {
+    if (this.paginaActual < this.totalPaginas) {
+      this.paginaActual++;
+      this.actualizarPaginacion();
+    }
+  }
+
+  anteriorPagina(): void {
+    if (this.paginaActual > 1) {
+      this.paginaActual--;
+      this.actualizarPaginacion();
+    }
   }
 
   getRoleName(roleId: number): string {
@@ -51,7 +79,7 @@ export class IndexUserComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(['admin/user/edit', id]);
+    this.router.navigate(['admin/users/edit', id]);
   }
 
   onDelete(id: number) {

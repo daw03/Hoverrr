@@ -1,8 +1,16 @@
-<div class="auth-wrapper m-3">
-  <form class="form-signin" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <h3 class="h3 mb-3 font-weight-normal text-center">Editar Usuario</h3>
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="margin-top: 1%; margin-bottom: 1%"
+>
+  <form
+    class="card p-4 shadow rounded-0"
+    style="background-color: #f8f9fa; width: 400px"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <h3 class="text-center mb-5">Editar Usuario</h3>
 
-    <div *ngIf="errors" class="alert alert-danger">
+    <div *ngIf="errors" class="alert alert-danger rounded-0 mb-3">
       <ul>
         <li *ngFor="let error of errors | keyvalue">
           <strong>{{ error.key }}:</strong> {{ error.value }}
@@ -10,9 +18,14 @@
       </ul>
     </div>
 
-    <div class="form-group">
-      <label>Nombre</label>
-      <input type="text" class="form-control m-2" formControlName="name" />
+    <div class="mb-5">
+      <label for="name" class="form-label">Nombre</label>
+      <input
+        type="text"
+        class="form-control rounded-0"
+        id="name"
+        formControlName="name"
+      />
       <div
         *ngIf="
           userForm.get('name')?.invalid &&
@@ -23,10 +36,14 @@
         El nombre es obligatorio.
       </div>
     </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" class="form-control m-2" formControlName="email" />
+    <div class="mb-5">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control rounded-0"
+        id="email"
+        formControlName="email"
+      />
       <div
         *ngIf="
           userForm.get('email')?.invalid &&
@@ -37,14 +54,16 @@
         El email es obligatorio y debe ser válido.
       </div>
     </div>
-
-    <div class="form-group">
-      <label>Rol</label>
-      <select class="form-control m-2" formControlName="role_id">
-        <option value="" disabled>Selecciona un rol</option>
-        <option value="0">Usuario</option>
-        <option value="1">Organizador de eventos</option>
-        <option value="2">Administrador</option>
+    <div class="mb-5">
+      <label for="role_id" class="form-label">Rol</label>
+      <select
+        id="role_id"
+        class="form-select rounded-0"
+        formControlName="role_id"
+      >
+        <option [value]="2">Administrador</option>
+        <option [value]="1">Organizador</option>
+        <option [value]="0">Usuario</option>
       </select>
       <div
         *ngIf="
@@ -56,13 +75,15 @@
         El rol es obligatorio.
       </div>
     </div>
-
-    <button
-      type="submit"
-      class="btn btn-block btn-primary"
-      [disabled]="userForm.invalid"
-    >
-      Guardar Cambios
-    </button>
+    <hr />
+    <div class="d-grid">
+      <button
+        type="submit"
+        class="btn btn-primary btn-block rounded-0 login-button"
+        [disabled]="userForm.invalid"
+      >
+        Guardar Cambios
+      </button>
+    </div>
   </form>
 </div>

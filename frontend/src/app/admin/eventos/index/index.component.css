@@ -1,0 +1,29 @@
+.custom-table {
+  border-radius: 0;
+}
+
+.custom-thead {
+  background-color: #b0e0e6; /* Turquesa pastel */
+  color: #000;
+}
+
+.custom-thead th {
+  border-color: #d9d9d9;
+}
+
+.custom-table td,
+.custom-table th {
+  border-color: #d9d9d9;
+}
+
+.create-button {
+  background-color: #37ffd7;
+  border-color: #37ffd7;
+  color: #000;
+}
+
+.create-button:hover {
+  background-color: #29c4a3;
+  border-color: #29c4a3;
+  color: #000;
+}

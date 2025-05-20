@@ -1,79 +1,61 @@
-<div
-  class="container d-flex justify-content-center align-items-center"
-  style="margin-top: 1%; margin-bottom: 1%"
-  *ngIf="evento"
->
-  <div
-    class="card p-2 shadow rounded-0"
-    style="background-color: #d9d9d9; width: 100vw; height: 55vh;"
-  >
-    
-    <div class="row g-0">
-      <div
-        class="col-md-4 d-flex align-items-center justify-content-center p-3"
-        style="background-color: #f8f9fa;"
-      >
-        <img
-          *ngIf="evento.file?.file_path"
-          [src]="'http://127.0.0.1:8000/storage/' + evento.file?.file_path"
-          class="img-fluid rounded shadow"
-          alt="Imagen del evento"
-          style="max-height: 280px; object-fit: cover"
-        />
-        <p *ngIf="!evento.file?.file_path" class="text-muted text-center">
-          Sin imagen disponible
+<div class="container mt-2 mb-2" *ngIf="evento">
+  <div class="card shadow-lg rounded-0 overflow-hidden">
+    <div class="bg-turquoise text-white p-4 text-center">
+      <h2 class="mb-0 fw-bold">{{ evento.nombre }}</h2>
+    </div>
+
+    <img
+      *ngIf="evento.file?.file_path"
+      [src]="'http://127.0.0.1:8000/storage/' + evento.file?.file_path"
+      alt="Imagen del evento"
+      class="img-fluid w-100 object-fit-cover"
+      style="max-height: 400px"
+    />
+    <p *ngIf="!evento.file?.file_path" class="text-muted text-center p-3">
+      Sin imagen disponible
+    </p>
+
+    <div class="p-4 bg-light">
+      <div class="mb-3">
+        <span class="badge bg-dark text-white px-3 py-2">
+          🏷️ {{ evento.categoria?.nombre || evento.categoria_id }}
+        </span>
+      </div>
+
+      <div class="mb-3">
+        <p>📍 <strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
+        <p>📅 <strong>Fecha del evento:</strong> {{ evento.fecha_evento }}</p>
+        <p>
+          💶 <strong>Precio:</strong>
+          <span *ngIf="evento.precio === 0"> GRATIS</span>
+          <span *ngIf="evento.precio != null && evento.precio > 0">
+            {{ evento.precio }} €
+          </span>
+          <span *ngIf="evento.precio == null">No especificado</span>
+        </p>
+
+        <p>
+          📝 <strong>Inscripción abierta hasta:</strong>
+          {{ evento.fecha_evento || "No disponible" }}
         </p>
       </div>
 
-      <div class="col-md-8">
-        <div class="card-body">
-          <h3 class="card-title text-primary fw-bold mb-3">{{ evento.nombre }}</h3>
-          <p class="card-text mb-2">
-            <strong>Descripción:</strong> {{ evento.descripcion }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Fecha:</strong> {{ evento.fecha_evento }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Ubicación:</strong> {{ evento.ubicacion }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Precio:</strong>
-            <span *ngIf="evento.precio === 0; else precioNumerico">GRATIS</span>
-            <ng-template #precioNumerico>
-              {{ evento.precio !== null ? evento.precio + " €" : "Gratuito" }}
-            </ng-template>
-          </p>
-          <p class="card-text mb-2">
-            <strong>Premios:</strong> {{ evento.premios || "No hay premios" }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Inscripción Abierta:</strong>
-            {{ evento.inscripcion_abierta ? "Sí" : "No" }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Categoría ID:</strong> {{ evento.categoria_id }}
-          </p>
-          <p class="card-text mb-2">
-            <strong>Usuario ID:</strong> {{ evento.user_id }}
-          </p>
-          <p class="card-text mb-2"><strong>ID:</strong> {{ evento.id }}</p>
+      <div class="mb-4">
+        <strong>📝 Descripción:</strong>
+        <p>{{ evento.descripcion }}</p>
+      </div>
 
-          <div class="mt-3">
-            <ng-container *ngIf="isSignedIn">
-              <ng-container
-                *ngIf="esPropietario(evento.user_id) || usuario.role_id == 1"
-              >
-                <button
-                  class="btn btn-danger btn-sm me-2 rounded-0"
-                  (click)="eliminarEvento(evento.id)"
-                >
-                  <i class="bi bi-trash"></i> Eliminar
-                </button>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
+      <div class="mb-4">
+        <p>
+          🏆 <strong>Premios:</strong> {{ evento.premios || "No hay premios" }}
+        </p>
+        <p>👤 <strong>Organizador ID:</strong> {{ evento.user_id }}</p>
+      </div>
+
+      <div *ngIf="evento.inscripcion_abierta" class="text-center">
+        <button class="btn btn-lg btn-turquoise px-5 py-3 fw-bold rounded-0">
+          ¡Quiero apuntarme!
+        </button>
       </div>
     </div>
   </div>

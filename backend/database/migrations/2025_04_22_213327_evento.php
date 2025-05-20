@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('premios')->nullable();
             $table->boolean('inscripcion_abierta')->default(true);
             $table->boolean('estado')->default(true);
+            $table->boolean('verParticipantes')->default(true);
             $table->float('precio')->default(0);
             $table->foreignId('user_id');
             $table->timestamps();
