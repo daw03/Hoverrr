@@ -11,11 +11,6 @@ class CategoriaController extends Controller
     public function index()
     {
         try {
-            $user = Auth::user();
-            if (!$user || $user->role_id !== "2") {
-                return response()->json(['error' => 'No tienes permiso de administrador.'], 403);
-            }
-
             $categorias = Categoria::all();
             return response()->json($categorias);
         } catch (\Exception $exception) {

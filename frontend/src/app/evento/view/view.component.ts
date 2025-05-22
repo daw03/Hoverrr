@@ -5,6 +5,7 @@ import { Evento } from '../evento';
 import { EventoService } from '../evento.service';
 import { AuthService } from '../../shared/auth.service';
 import { AuthStateService } from '../../shared/auth-state.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export class Usuario {
   id!: number;
@@ -26,13 +27,15 @@ export class ViewEventoComponent implements OnInit {
   isSignedIn = false;
   errorMessage: any;
   errores: any = null;
+  nombreUsuario: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private eventoService: EventoService,
     private authState: AuthStateService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +49,7 @@ export class ViewEventoComponent implements OnInit {
       this.eventoService.show(eventoId).subscribe(
         (data: any) => {
           this.evento = data;
+          this.nombreUsuario = data.user?.name || 'Desconocido';
         },
         (error) => {
           this.errorMessage = error;
@@ -80,5 +84,23 @@ export class ViewEventoComponent implements OnInit {
 
   esPropietario(id: any) {
     return this.usuario.id === id || this.usuario.role_id === 1;
+  }
+
+  formatearDescripcion(texto: string): SafeHtml {
+    const textoConSaltos = texto.replace(/\n/g, '<br>');
+    return this.sanitizer.bypassSecurityTrustHtml(textoConSaltos);
+  }
+
+   inscribirse(): void {
+    const id = this.evento?.id || 0;
+    this.eventoService.inscribirse(id).subscribe({
+      next: () => {
+        console.log('Inscripción exitosa');
+      },
+      error: (err) => {
+        console.error(err);
+        //alert('Hubo un problema al inscribirse.');
+      }
+    });
   }
 }

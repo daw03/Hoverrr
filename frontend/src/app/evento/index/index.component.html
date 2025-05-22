@@ -1,52 +1,83 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h1 class="text-center mb-4">Lista de Eventos</h1>
+      <h2 class="mt-2 mb-2 fw-bold">Próximos Eventos</h2>
+
       <div *ngIf="eventos.length > 0; else noEventos">
-        <div class="row">
+        <div class="row g-3">
           <div *ngFor="let evento of eventos" class="col-md-6 col-sm-12">
-            <div class="card mb-3 shadow-sm">
-              <div class="card-header bg-primary text-white fw-bold">
-                {{ evento.nombre }}
+            <div class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise">
+              <!-- Título del evento -->
+              <div class="mt-1 ms-2">
+                <h5
+                  class="card-title text-white fw-bold"
+                  style="font-family: 'Bodoni Moda', serif"
+                >
+                  {{ evento.nombre }}
+                </h5>
               </div>
-              <div class="card-body">
-                <p class="card-text"><strong>Descripción:</strong> {{ evento.descripcion }}</p>
-                <p class="card-text"><strong>Fecha:</strong> {{ evento.fecha_evento }}</p>
-                <p class="card-text"><strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
-                <p class="card-text"><strong>Categoría ID:</strong> {{ evento.categoria_id }}</p>
-                <p class="card-text"><strong>Precio:</strong>
-                  <span *ngIf="evento.precio === 0; else precioNumerico">GRATIS</span>
-                  <ng-template #precioNumerico>
-                    {{ evento.precio !== null ? evento.precio + ' €' : 'Gratuito' }}
-                  </ng-template>
+
+              <!-- Imagen del evento -->
+              <img
+                *ngIf="evento.file?.file_path"
+                [src]="
+                  'http://127.0.0.1:8000/storage/' +
+                  (evento.file?.file_path ?? '')
+                "
+                class="card-img-top rounded-0"
+                alt="Imagen del evento"
+                style="height: 180px; object-fit: cover"
+              />
+
+              <!-- Cuerpo de la tarjeta -->
+              <div
+                class="card-body"
+                style="background-color: rgb(204, 204, 204)"
+              >
+                <p class="card-text text-muted mb-1">
+                  <strong>📅 Fecha:</strong> {{ evento.fecha_evento }}
                 </p>
-                <p class="card-text"><strong>Premios:</strong> {{ evento.premios || 'No hay premios' }}</p>
-                <p class="card-text"><strong>Inscripción Abierta:</strong> {{ evento.inscripcion_abierta ? 'Sí' : 'No' }}</p>
-                <p class="card-text"><strong>ID Usuario:</strong> {{ evento.user_id }}</p>
-                <p class="card-text"><strong>ID:</strong> {{ evento.id }}</p>
 
-                <div *ngIf="evento.file && evento.file.file_path" class="text-center my-3">
-                  <img
-                    [src]="'http://127.0.0.1:8000/storage/' + evento.file.file_path"
-                    class="img-fluid img-thumbnail rounded shadow"
-                    alt="Imagen del evento"
-                    style="max-height: 300px; object-fit: cover;"
-                  />
+                <p class="card-text">
+                  {{
+                    evento.descripcion.length > 100
+                      ? (evento.descripcion | slice : 0 : 100) + "..."
+                      : evento.descripcion
+                  }}
+                </p>
+
+                <div class="d-grid">
+                  <button
+                    class="btn btn-turquoise btn-sm mt-2 rounded-0"
+                    (click)="verDetalles(evento?.id)"
+                  >
+                    Ver Detalles
+                  </button>
                 </div>
-
-                <button class="btn btn-outline-primary btn-sm mt-2" (click)="verDetalles(evento?.id)">
-                  Ver Detalles
-                </button>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Botón Ver más eventos -->
+        <div class="text-center mt-4">
+          <button class="btn btn-outline-secondary btn-sm rounded-0">
+            Ver más eventos
+          </button>
+        </div>
+
+        <hr />
+
+        <!-- Categoría 1 (ejemplo estático, puedes reemplazarlo por un bucle si es dinámico) -->
+        <h4 class="mt-4">Categoría: Carreras</h4>
       </div>
 
+      <!-- Template si no hay eventos -->
       <ng-template #noEventos>
         <p class="text-center text-muted">No hay eventos para mostrar.</p>
       </ng-template>
 
+      <!-- Errores -->
       <div *ngIf="errors" class="alert alert-danger mt-3">
         <p>Error: {{ errors }}</p>
       </div>

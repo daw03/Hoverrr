@@ -22,6 +22,10 @@ export class EventoService {
     return this.http.get('http://127.0.0.1:8000/api/eventos');
   }
 
+  miseventos(): Observable<any> {
+    return this.http.get('http://127.0.0.1:8000/api/eventos/inscrito');
+  }
+
   show(id: string): Observable<any> {
     return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}`);
   }
@@ -30,7 +34,6 @@ export class EventoService {
     return this.http.get('http://127.0.0.1:8000/api/eventos/mine');
   }
 
-  // Borrar
   delete(id: string): Observable<any> {
     return this.http.delete(`http://127.0.0.1:8000/api/eventos/${id}`, {});
   }
@@ -38,5 +41,13 @@ export class EventoService {
   update(id: string, evento: FormData): Observable<any> {
     evento.append('_method', 'PUT');
     return this.http.post(`http://127.0.0.1:8000/api/eventos/${id}`, evento);
+  }
+
+  categorias(): Observable<any> {
+    return this.http.get('http://127.0.0.1:8000/api/categorias');
+  }
+
+  inscribirse(id: number): Observable<any> {
+    return this.http.post(`http://127.0.0.1:8000/api/eventos/${id}/inscribirse/`, {});
   }
 }

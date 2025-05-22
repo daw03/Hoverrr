@@ -190,7 +190,7 @@ class EventoController extends Controller
 
             $evento->inscripciones()->attach($user_id);
             $evento->save();
-            return $evento;
+            return response()->json(['message' => 'Inscripción exitosa.'], 200);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()]);
         }

@@ -1,9 +1,11 @@
 <div class="container mt-2 mb-2" *ngIf="evento">
   <div class="card shadow-lg rounded-0 overflow-hidden">
-    <div class="bg-turquoise text-white p-4 text-center">
-      <h2 class="mb-0 fw-bold">{{ evento.nombre }}</h2>
+    <!-- Título -->
+    <div class="bg-turquoise p-4 text-white">
+      <h2 class="mb-0" style="font-family: 'Bodoni Moda', serif; font-weight: bold">{{ evento.nombre }}</h2>
     </div>
 
+    <!-- Imagen -->
     <img
       *ngIf="evento.file?.file_path"
       [src]="'http://127.0.0.1:8000/storage/' + evento.file?.file_path"
@@ -14,7 +16,6 @@
     <p *ngIf="!evento.file?.file_path" class="text-muted text-center p-3">
       Sin imagen disponible
     </p>
-
     <div class="p-4 bg-light">
       <div class="mb-3">
         <span class="badge bg-dark text-white px-3 py-2">
@@ -22,38 +23,42 @@
         </span>
       </div>
 
-      <div class="mb-3">
-        <p>📍 <strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
-        <p>📅 <strong>Fecha del evento:</strong> {{ evento.fecha_evento }}</p>
-        <p>
-          💶 <strong>Precio:</strong>
-          <span *ngIf="evento.precio === 0"> GRATIS</span>
-          <span *ngIf="evento.precio != null && evento.precio > 0">
-            {{ evento.precio }} €
-          </span>
-          <span *ngIf="evento.precio == null">No especificado</span>
-        </p>
-
-        <p>
-          📝 <strong>Inscripción abierta hasta:</strong>
-          {{ evento.fecha_evento || "No disponible" }}
-        </p>
+      <div class="row mb-4">
+        <!-- Columna izquierda -->
+        <div class="col-12 col-md-6">
+          <p>📍 <strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
+          <p>📅 <strong>Fecha del evento:</strong> {{ evento.fecha_evento }}</p>
+          <p>
+            💶 <strong>Precio:</strong>
+            <span *ngIf="evento.precio === 0">GRATIS</span>
+            <span *ngIf="evento.precio != null && evento.precio > 0">
+              {{ evento.precio }} €
+            </span>
+            <span *ngIf="evento.precio == null">No especificado</span>
+          </p>
+        </div>
+        <!-- Columna derecha -->
+        <div class="col-12 col-md-6">
+          <p>
+            📝 <strong>Inscripción abierta hasta:</strong>
+            {{ evento.fecha_evento || "No disponible" }}
+          </p>
+          <p>
+            🏆 <strong>Premios:</strong>
+            {{ evento.premios || "No hay premios" }}
+          </p>
+          <p>👤 <strong>Organizador:</strong> {{ nombreUsuario }}</p>
+        </div>
       </div>
 
+      <!-- Descripción -->
       <div class="mb-4">
-        <strong>📝 Descripción:</strong>
-        <p>{{ evento.descripcion }}</p>
+        <p [innerHTML]="formatearDescripcion(evento.descripcion)"></p>
       </div>
 
-      <div class="mb-4">
-        <p>
-          🏆 <strong>Premios:</strong> {{ evento.premios || "No hay premios" }}
-        </p>
-        <p>👤 <strong>Organizador ID:</strong> {{ evento.user_id }}</p>
-      </div>
-
+      <!-- Botón de inscripción -->
       <div *ngIf="evento.inscripcion_abierta" class="text-center">
-        <button class="btn btn-lg btn-turquoise px-5 py-3 fw-bold rounded-0">
+        <button class="btn btn-lg btn-turquoise px-5 py-3 fw-bold rounded-0" (click)="inscribirse()">
           ¡Quiero apuntarme!
         </button>
       </div>

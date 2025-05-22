@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -24,13 +24,14 @@ import { Subject, takeUntil } from 'rxjs';
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
-export class CreateEventoComponent implements OnInit {
-  eventoForm!: FormGroup;
+export class CreateEventoComponent implements OnInit, OnDestroy {
+  eventoForm!: FormGroup; // Declara, pero no inicializa aquí
   errors: any = null;
   evento!: Evento;
   selectedImage!: any;
   isSignedIn!: boolean;
   user: User = new User();
+  categorias: { id: number; nombre: string; created_at: string | null; updated_at: string | null }[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -42,12 +43,7 @@ export class CreateEventoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    /* this.checkAuthAndLoadUser();
-
-    if (this.user && this.user.role_id.toString() == '0') {
-      this.router.navigate(['/evento/index']);
-    } */
-
+    // 1. form
     this.eventoForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       descripcion: new FormControl('', [Validators.required]),
@@ -59,14 +55,27 @@ export class CreateEventoComponent implements OnInit {
       inscripcion_abierta: new FormControl(false),
       file: new FormControl('', [Validators.required]),
     });
+
+    // 2. user
+    this.checkAuthAndLoadUser();
+
+    // 3. categorias
+    this.loadCategorias();
+
     this.isSignedIn = this.token.isLoggedIn();
   }
 
-   /* private checkAuthAndLoadUser() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private checkAuthAndLoadUser() {
     if (this.token.isLoggedIn()) {
       this.authState.setAuthState(true);
       this.getUserLoggedIn();
     } else {
+      // Si no está logueado, redirige inmediatamente
       this.router.navigate(['/evento/index']);
     }
   }
@@ -78,18 +87,32 @@ export class CreateEventoComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.user = data;
-          if (this.user.role_id.toString() == '0') {
+          if (this.user.role_id?.toString() === '0') {
             this.router.navigate(['/evento/index']);
           }
-          //console.log(this.user);
         },
         error: (error) => {
           console.error('Error al cargar el perfil del usuario', error);
           this.authState.setAuthState(false);
           this.token.removeToken();
+          this.router.navigate(['/evento/index']);
         },
       });
-  } */
+  }
+
+  private loadCategorias(): void {
+    this.eventoService.categorias()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any) => {
+          this.categorias = data;
+          console.log('Categorías cargadas:', this.categorias);
+        },
+        error: (error) => {
+          console.error('Error al cargar las categorías:', error);
+        }
+      });
+  }
 
   onSubmit() {
     if (this.eventoForm.valid) {

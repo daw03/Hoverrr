@@ -1,0 +1,33 @@
+.bg-turquoise {
+  background-color: #585c5e; 
+}
+
+.btn-turquoise {
+  background-color: #37ffd7;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-turquoise:hover {
+  background-color: #29c4a3;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.card {
+  border: none;
+  border-radius: 0 !important;
+}
+
+img {
+  border-radius: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .btn-turquoise {
+    width: 100%;
+  }
+}

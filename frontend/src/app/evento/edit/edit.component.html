@@ -1,7 +1,17 @@
-<div class="container d-flex justify-content-center align-items-center" style="margin-top: 1%; margin-bottom: 1%">
-  <div class="card p-4 shadow rounded-0" style="background-color: #d9d9d9; width: 800px">
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="margin-top: 1%; margin-bottom: 1%"
+>
+  <div
+    class="card p-4 shadow rounded-0"
+    style="background-color: #d9d9d9; width: 800px"
+  >
     <h3 class="text-center mb-4">Editar Evento</h3>
-    <form [formGroup]="eventoForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <form
+      [formGroup]="eventoForm"
+      (ngSubmit)="onSubmit()"
+      enctype="multipart/form-data"
+    >
       <div *ngIf="errors" class="alert alert-danger mt-3 rounded-0">
         <ul>
           <li *ngFor="let error of errors | keyvalue">
@@ -12,59 +22,124 @@
 
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control rounded-0" id="nombre" formControlName="nombre" />
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="nombre"
+          formControlName="nombre"
+        />
       </div>
 
       <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción</label>
-        <input type="text" class="form-control rounded-0" id="descripcion" formControlName="descripcion" />
+        <textarea
+          class="form-control rounded-0"
+          id="descripcion"
+          formControlName="descripcion"
+          rows="5"
+        ></textarea>
       </div>
 
       <div class="mb-3">
         <label for="fecha_evento" class="form-label">Fecha del Evento</label>
-        <input type="date" class="form-control rounded-0" id="fecha_evento" formControlName="fecha_evento" />
+        <input
+          type="date"
+          class="form-control rounded-0"
+          id="fecha_evento"
+          formControlName="fecha_evento"
+        />
       </div>
 
       <div class="mb-3">
         <label for="categoria_id" class="form-label">Categoría</label>
-        <select formControlName="categoria_id" id="categoria_id" class="form-select rounded-0">
+        <select
+          formControlName="categoria_id"
+          id="categoria_id"
+          class="form-select rounded-0"
+        >
           <option value="" disabled>Selecciona una categoría</option>
-          <option value="1">Categoría 1</option>
+          <option *ngFor="let categoria of categorias" [value]="categoria.id">
+            {{ categoria.nombre }}
+          </option>
         </select>
+        <div
+          *ngIf="
+            eventoForm.get('categoria_id')?.invalid &&
+            (eventoForm.get('categoria_id')?.dirty ||
+              eventoForm.get('categoria_id')?.touched)
+          "
+          class="text-danger"
+        >
+          La categoría es obligatoria.
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="ubicacion" class="form-label">Ubicación</label>
-        <input type="text" class="form-control rounded-0" id="ubicacion" formControlName="ubicacion" />
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="ubicacion"
+          formControlName="ubicacion"
+        />
       </div>
 
       <div class="mb-3">
         <label for="premios" class="form-label">Premios (Opcional)</label>
-        <input type="text" class="form-control rounded-0" id="premios" formControlName="premios" />
+        <input
+          type="text"
+          class="form-control rounded-0"
+          id="premios"
+          formControlName="premios"
+        />
       </div>
 
       <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input rounded-0" id="inscripcion_abierta" formControlName="inscripcion_abierta" />
-        <label class="form-check-label" for="inscripcion_abierta">Inscripción Abierta</label>
+        <input
+          type="checkbox"
+          class="form-check-input rounded-0"
+          id="inscripcion_abierta"
+          formControlName="inscripcion_abierta"
+        />
+        <label class="form-check-label" for="inscripcion_abierta"
+          >Inscripción Abierta</label
+        >
       </div>
 
       <div class="mb-3">
         <label for="precio" class="form-label">Precio (Opcional)</label>
-        <input type="number" class="form-control rounded-0" id="precio" formControlName="precio" />
+        <input
+          type="number"
+          class="form-control rounded-0"
+          id="precio"
+          formControlName="precio"
+        />
       </div>
 
       <div class="mb-3">
         <label for="file" class="form-label">Nueva Imagen (opcional)</label>
-        <input type="file" class="form-control rounded-0" id="file" (change)="onFileChange($event)" />
+        <input
+          type="file"
+          class="form-control rounded-0"
+          id="file"
+          (change)="onFileChange($event)"
+        />
 
         <div *ngIf="evento?.file?.file_path">
           <p>Imagen actual:</p>
-          <img [src]="'http://127.0.0.1:8000/storage/' + evento.file?.file_path" style="max-width: 200px; height: auto; margin-top: 5px;" />
+          <img
+            [src]="'http://127.0.0.1:8000/storage/' + evento.file?.file_path"
+            style="max-width: 200px; height: auto; margin-top: 5px"
+          />
         </div>
       </div>
 
       <div class="d-grid">
-        <button type="submit" class="btn btn-primary btn-block rounded-0" [disabled]="eventoForm.invalid">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block rounded-0"
+          [disabled]="eventoForm.invalid"
+        >
           Actualizar Evento
         </button>
       </div>

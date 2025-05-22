@@ -31,7 +31,7 @@ export class IndexComponent implements OnInit {
     public eventoService: EventoService,
     private auth: AuthStateService,
     private authService: AuthService,
-    private router: Router // Inyecta el Router
+    private router: Router
   ) {
     this.eventoService.index().subscribe(
       (data: any) => {

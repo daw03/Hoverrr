@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; // Importa OnDestroy
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventoService } from '../../evento/evento.service';
 import { Evento } from '../../evento/evento';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subject, takeUntil } from 'rxjs'; // Importa Subject y takeUntil
 
 @Component({
   selector: 'app-edit',
@@ -14,12 +15,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
-export class EditEventoComponent implements OnInit {
+export class EditEventoComponent implements OnInit, OnDestroy { // Implementa OnDestroy
   eventoForm!: FormGroup;
   eventoId!: string;
   errors: any = null;
   selectedImage: File | null = null;
   evento!: Evento;
+  // Definimos el tipo de la categoría directamente aquí, si no quieres una interfaz aparte
+  categorias: { id: number; nombre: string; created_at: string | null; updated_at: string | null }[] = [];
+  private destroy$ = new Subject<void>(); // Para desuscribirse de los observables
 
   constructor(
     private route: ActivatedRoute,
@@ -30,51 +34,84 @@ export class EditEventoComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
+    // Siempre inicializa el formulario PRIMERO
+    this.eventoForm = new FormGroup({
+      nombre: new FormControl('', Validators.required),
+      descripcion: new FormControl('', Validators.required),
+      fecha_evento: new FormControl('', Validators.required),
+      categoria_id: new FormControl('', Validators.required),
+      ubicacion: new FormControl('', Validators.required),
+      premios: new FormControl(''),
+      inscripcion_abierta: new FormControl(false),
+      precio: new FormControl(null),
+    });
+
+    // Carga las categorías al iniciar el componente
+    this.loadCategorias();
+
     if (id) {
       this.eventoId = id;
 
-      // Inicializa el formulario
-      this.eventoForm = new FormGroup({
-        nombre: new FormControl('', Validators.required),
-        descripcion: new FormControl('', Validators.required),
-        fecha_evento: new FormControl('', Validators.required),
-        categoria_id: new FormControl('', Validators.required),
-        ubicacion: new FormControl('', Validators.required),
-        premios: new FormControl(''),
-        inscripcion_abierta: new FormControl(false),
-        precio: new FormControl(null),
-      });
+      this.eventoService.show(this.eventoId)
+        .pipe(takeUntil(this.destroy$)) // Usa takeUntil para desuscribirse
+        .subscribe({
+          next: (data: any) => {
+            this.evento = Array.isArray(data) ? data[0] : data;
 
-      this.eventoService.show(this.eventoId).subscribe({
-        next: (data: any) => {
-          this.evento = Array.isArray(data) ? data[0] : data;
+            if (!this.evento) {
+              this.errors = 'Evento no encontrado.';
+              this.router.navigate(['/evento/index']);
+              return;
+            }
 
-          if (!this.evento) {
-            this.errors = 'Evento no encontrado.';
+            // Aquí es donde estableces los valores del formulario
+            this.eventoForm.patchValue({
+              nombre: this.evento.nombre,
+              descripcion: this.evento.descripcion,
+              // Formatear la fecha para que el input type="date" la acepte
+              fecha_evento: this.evento.fecha_evento ? new Date(this.evento.fecha_evento).toISOString().substring(0, 10) : '',
+              categoria_id: this.evento.categoria_id, // Asegura que esta propiedad coincida con el ID de la categoría
+              ubicacion: this.evento.ubicacion,
+              premios: this.evento.premios,
+              inscripcion_abierta: this.evento.inscripcion_abierta,
+              precio: this.evento.precio,
+            });
+          },
+          error: () => {
+            this.errors = 'No se pudo cargar el evento para editar.';
             this.router.navigate(['/evento/index']);
-            return;
-          }
-
-          this.eventoForm.patchValue({
-            nombre: this.evento.nombre,
-            descripcion: this.evento.descripcion,
-            fecha_evento: this.evento.fecha_evento,
-            categoria_id: this.evento.categoria_id,
-            ubicacion: this.evento.ubicacion,
-            premios: this.evento.premios,
-            inscripcion_abierta: this.evento.inscripcion_abierta,
-            precio: this.evento.precio,
-          });
-        },
-        error: () => {
-          this.errors = 'No se pudo cargar el evento para editar.';
-          this.router.navigate(['/evento/index']);
-        },
-      });
+          },
+        });
     } else {
       this.errors = 'ID de evento no proporcionado.';
       this.router.navigate(['/evento/index']);
     }
+  }
+
+  ngOnDestroy(): void {
+    // Asegúrate de desuscribirte cuando el componente se destruya
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // Nuevo método para cargar las categorías
+  private loadCategorias(): void {
+    this.eventoService.categorias()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any) => {
+          this.categorias = data;
+          console.log('Categorías cargadas para editar:', this.categorias);
+          // Si el evento ya se cargó, asegúrate de que la categoría seleccionada se aplique
+          // Esto es importante si las categorías se cargan después del evento
+          if (this.evento && this.evento.categoria_id && this.eventoForm) {
+            this.eventoForm.get('categoria_id')?.setValue(this.evento.categoria_id);
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar las categorías:', error);
+        }
+      });
   }
 
   onFileChange(event: any): void {
@@ -103,6 +140,8 @@ export class EditEventoComponent implements OnInit {
       if (this.selectedImage) {
         formData.append('file', this.selectedImage);
       }
+      // Importante para Laravel: si usas put/patch y FormData, añade _method
+      formData.append('_method', 'PUT');
 
       this.eventoService.update(this.eventoId, formData).subscribe({
         next: () => {

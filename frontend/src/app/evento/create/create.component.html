@@ -15,7 +15,6 @@
           </li>
         </ul>
       </div>
-
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
         <input
@@ -35,15 +34,14 @@
           El nombre es obligatorio.
         </div>
       </div>
-
       <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción</label>
-        <input
-          type="text"
+        <textarea
           class="form-control rounded-0"
           id="descripcion"
           formControlName="descripcion"
-        />
+          rows="5"
+        ></textarea>
         <div
           *ngIf="
             eventoForm.get('descripcion')?.invalid &&
@@ -55,7 +53,6 @@
           La descripción es obligatoria.
         </div>
       </div>
-
       <div class="mb-3">
         <label for="fecha_evento" class="form-label">Fecha del Evento</label>
         <input
@@ -84,7 +81,9 @@
           class="form-select rounded-0"
         >
           <option value="" disabled>Selecciona una categoría</option>
-          <option value="1">Categoría 1</option>
+          <option *ngFor="let categoria of categorias" [value]="categoria.id">
+            {{ categoria.nombre }}
+          </option>
         </select>
         <div
           *ngIf="
@@ -117,7 +116,6 @@
           La ubicación es obligatoria.
         </div>
       </div>
-
       <div class="mb-3">
         <label for="premios" class="form-label">Premios (Opcional)</label>
         <input
@@ -127,7 +125,6 @@
           formControlName="premios"
         />
       </div>
-
       <div class="form-check mb-3">
         <input
           type="checkbox"
@@ -139,7 +136,6 @@
           >Inscripción Abierta</label
         >
       </div>
-
       <div class="mb-3">
         <label for="precio" class="form-label">Precio (Opcional)</label>
         <input
@@ -149,7 +145,6 @@
           formControlName="precio"
         />
       </div>
-
       <div class="mb-3">
         <label for="file" class="form-label">Imagen</label>
         <input
@@ -169,7 +164,6 @@
           La imagen es obligatoria.
         </div>
       </div>
-
       <div class="d-grid">
         <button
           type="submit"
