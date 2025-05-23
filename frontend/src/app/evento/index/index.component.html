@@ -1,43 +1,30 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="mt-2 mb-2 fw-bold">Próximos Eventos</h2>
+      <h2 class="mt-2 mb-2 fw-bold section-title-black-shadow">Próximos Eventos</h2>
 
-      <div *ngIf="eventos.length > 0; else noEventos">
+      <div *ngIf="eventosRecientes.length > 0; else noEventos">
         <div class="row g-3">
-          <div *ngFor="let evento of eventos" class="col-md-6 col-sm-12">
-            <div class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise">
-              <!-- Título del evento -->
+          <div *ngFor="let evento of eventosRecientes" class="col-md-6 col-sm-12">
+            <div class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise"
+                 [class.event-passed]="isEventPassed(evento.fecha_evento)">
               <div class="mt-1 ms-2">
-                <h5
-                  class="card-title text-white fw-bold"
-                  style="font-family: 'Bodoni Moda', serif"
-                >
+                <h5 class="card-title text-white fw-bold" style="font-family: 'Bodoni Moda', serif">
                   {{ evento.nombre }}
                 </h5>
               </div>
-
-              <!-- Imagen del evento -->
               <img
                 *ngIf="evento.file?.file_path"
-                [src]="
-                  'http://127.0.0.1:8000/storage/' +
-                  (evento.file?.file_path ?? '')
-                "
+                [src]="'http://127.0.0.1:8000/storage/' + (evento.file?.file_path ?? '')"
                 class="card-img-top rounded-0"
                 alt="Imagen del evento"
                 style="height: 180px; object-fit: cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/400x180/cccccc/333333?text=Sin+Imagen';"
               />
-
-              <!-- Cuerpo de la tarjeta -->
-              <div
-                class="card-body"
-                style="background-color: rgb(204, 204, 204)"
-              >
+              <div class="card-body" style="background-color: rgb(204, 204, 204)">
                 <p class="card-text text-muted mb-1">
                   <strong>📅 Fecha:</strong> {{ evento.fecha_evento }}
                 </p>
-
                 <p class="card-text">
                   {{
                     evento.descripcion.length > 100
@@ -45,7 +32,6 @@
                       : evento.descripcion
                   }}
                 </p>
-
                 <div class="d-grid">
                   <button
                     class="btn btn-turquoise btn-sm mt-2 rounded-0"
@@ -59,25 +45,123 @@
           </div>
         </div>
 
-        <!-- Botón Ver más eventos -->
         <div class="text-center mt-4">
-          <button class="btn btn-outline-secondary btn-sm rounded-0">
-            Ver más eventos
+          <button class="btn btn-outline-secondary btn-sm rounded-0" style="background-color: grey; color: white;" routerLink="/evento/todo">
+            Ver todos los eventos
           </button>
         </div>
-
-        <hr />
-
-        <!-- Categoría 1 (ejemplo estático, puedes reemplazarlo por un bucle si es dinámico) -->
-        <h4 class="mt-4">Categoría: Carreras</h4>
       </div>
-
-      <!-- Template si no hay eventos -->
       <ng-template #noEventos>
         <p class="text-center text-muted">No hay eventos para mostrar.</p>
       </ng-template>
 
-      <!-- Errores -->
+      <h2 class="mt-2 mb-2 fw-bold section-title-black-shadow">Eventos de Carreras</h2>
+
+      <div *ngIf="eventosCarreras.length > 0; else noEventosCarreras">
+        <div class="row g-3">
+          <div *ngFor="let evento of eventosCarreras" class="col-md-6 col-sm-12">
+            <div class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise"
+                 [class.event-passed]="isEventPassed(evento.fecha_evento)">
+              <div class="mt-1 ms-2">
+                <h5 class="card-title text-white fw-bold" style="font-family: 'Bodoni Moda', serif">
+                  {{ evento.nombre }}
+                </h5>
+              </div>
+              <img
+                *ngIf="evento.file?.file_path"
+                [src]="'http://127.0.0.1:8000/storage/' + (evento.file?.file_path ?? '')"
+                class="card-img-top rounded-0"
+                alt="Imagen del evento"
+                style="height: 180px; object-fit: cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/400x180/cccccc/333333?text=Sin+Imagen';"
+              />
+              <div class="card-body" style="background-color: rgb(204, 204, 204)">
+                <p class="card-text text-muted mb-1">
+                  <strong>📅 Fecha:</strong> {{ evento.fecha_evento }}
+                </p>
+                <p class="card-text">
+                  {{
+                    evento.descripcion.length > 100
+                      ? (evento.descripcion | slice : 0 : 100) + "..."
+                      : evento.descripcion
+                  }}
+                </p>
+                <div class="d-grid">
+                  <button
+                    class="btn btn-turquoise btn-sm mt-2 rounded-0"
+                    (click)="verDetalles(evento?.id)"
+                  >
+                    Ver Detalles
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-outline-secondary btn-sm rounded-0" style="background-color: grey; color: white;" routerLink="/evento/todo">
+            Ver más eventos de Carreras
+          </button>
+        </div>
+      </div>
+      <ng-template #noEventosCarreras>
+        <p class="text-center text-muted">No hay eventos de Carreras para mostrar.</p>
+      </ng-template>
+
+      <h2 class="mt-2 mb-2 fw-bold section-title-black-shadow">Eventos de Freestyle</h2>
+
+      <div *ngIf="eventosFreestyle.length > 0; else noEventosFreestyle">
+        <div class="row g-3">
+          <div *ngFor="let evento of eventosFreestyle" class="col-md-6 col-sm-12">
+            <div class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise"
+                 [class.event-passed]="isEventPassed(evento.fecha_evento)">
+              <div class="mt-1 ms-2">
+                <h5 class="card-title text-white fw-bold" style="font-family: 'Bodoni Moda', serif">
+                  {{ evento.nombre }}
+                </h5>
+              </div>
+              <img
+                *ngIf="evento.file?.file_path"
+                [src]="'http://127.0.0.1:8000/storage/' + (evento.file?.file_path ?? '')"
+                class="card-img-top rounded-0"
+                alt="Imagen del evento"
+                style="height: 180px; object-fit: cover"
+                onerror="this.onerror=null;this.src='https://placehold.co/400x180/cccccc/333333?text=Sin+Imagen';"
+              />
+              <div class="card-body" style="background-color: rgb(204, 204, 204)">
+                <p class="card-text text-muted mb-1">
+                  <strong>📅 Fecha:</strong> {{ evento.fecha_evento }}
+                </p>
+                <p class="card-text">
+                  {{
+                    evento.descripcion.length > 100
+                      ? (evento.descripcion | slice : 0 : 100) + "..."
+                      : evento.descripcion
+                  }}
+                </p>
+                <div class="d-grid">
+                  <button
+                    class="btn btn-turquoise btn-sm mt-2 rounded-0"
+                    (click)="verDetalles(evento?.id)"
+                  >
+                    Ver Detalles
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4 mb-4">
+          <button class="btn btn-outline-secondary btn-sm rounded-0" style="background-color: grey; color: white;" routerLink="/evento/todo">
+            Ver más eventos de Freestyle
+          </button>
+        </div>
+      </div>
+      <ng-template #noEventosFreestyle>
+        <p class="text-center text-muted">No hay eventos de Freestyle para mostrar.</p>
+      </ng-template>
       <div *ngIf="errors" class="alert alert-danger mt-3">
         <p>Error: {{ errors }}</p>
       </div>

@@ -101,9 +101,7 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
       .subscribe({
         next: (data: any) => {
           this.categorias = data;
-          console.log('Categorías cargadas para editar:', this.categorias);
-          // Si el evento ya se cargó, asegúrate de que la categoría seleccionada se aplique
-          // Esto es importante si las categorías se cargan después del evento
+          //console.log('Categorías cargadas para editar:', this.categorias);
           if (this.evento && this.evento.categoria_id && this.eventoForm) {
             this.eventoForm.get('categoria_id')?.setValue(this.evento.categoria_id);
           }

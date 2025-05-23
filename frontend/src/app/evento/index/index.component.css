@@ -1,5 +1,8 @@
+/* src/app/evento/index/index.component.css */
+
+/* Colores base y botones */
 .bg-turquoise {
-  background-color: #585c5e; 
+  background-color: #585c5e;
 }
 
 .btn-turquoise {
@@ -13,19 +16,62 @@
   background-color: #29c4a3;
 }
 
+/* Propiedades generales de imagen */
 .object-fit-cover {
   object-fit: cover;
 }
 
+/* Estilo para los títulos sobre fondo variable */
+.section-title-black-shadow {
+  color: black;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8),
+               -1px -1px 2px rgba(255, 255, 255, 0.8),
+               1px -1px 2px rgba(255, 255, 255, 0.8),
+               -1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* --- Estilos de la tarjeta con efecto de zoom y manejo de eventos pasados --- */
 .card {
   border: none;
   border-radius: 0 !important;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave para zoom y sombra */
+  overflow: hidden; /* Corta cualquier desbordamiento durante el zoom */
+  position: relative; /* Necesario para que el z-index funcione correctamente */
 }
 
+/* Efecto de zoom al pasar el ratón para tarjetas normales (no pasadas) */
+.card:hover {
+  transform: scale(1.03); /* Ligeramente más grande */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  z-index: 10; /* Eleva la tarjeta para que no quede por debajo de las otras */
+  cursor: pointer; /* Indica que es clicable */
+}
+
+/* Estilo para los eventos cuya fecha ya ha pasado */
+.event-passed {
+  opacity: 0.5; /* Hace la tarjeta semitransparente */
+  pointer-events: none; /* Deshabilita clics y eventos de ratón en la tarjeta */
+  filter: grayscale(80%); /* Hace la tarjeta más descolorida/blanco y negro */
+  transition: opacity 0.3s ease, filter 0.3s ease; /* Transición suave para opacidad y filtro */
+  transform: scale(1); /* Asegura que no haya zoom inicial */
+  box-shadow: none; /* Sin sombra en estado normal */
+}
+
+/* ¡Importante! Anular el hover para los eventos pasados */
+.event-passed:hover {
+  transform: scale(1); /* No hace zoom al pasar el ratón */
+  box-shadow: none; /* No añade sombra al pasar el ratón */
+  cursor: default; /* Cambia el cursor a default */
+}
+/* ------------------------------------------------------------------------- */
+
+
+/* Imágenes dentro de las tarjetas */
 img {
   border-radius: 0 !important;
 }
 
+/* Media queries para responsividad */
 @media (max-width: 768px) {
   .btn-turquoise {
     width: 100%;

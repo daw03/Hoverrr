@@ -14,13 +14,13 @@ interface Categoria {
 }
 
 @Component({
-  selector: 'app-mine',
-  templateUrl: './mine.component.html',
-  styleUrl: './mine.component.css',
+  selector: 'app-todo',
   standalone: true,
   imports: [CommonModule],
+  templateUrl: './todo.component.html',
+  styleUrls: ['./todo.component.css'],
 })
-export class MineComponent implements OnInit {
+export class TodoComponent implements OnInit, OnDestroy {
   eventos: Evento[] = [];
   filteredEventos: Evento[] = [];
   paginatedEvents: Evento[] = [];
@@ -35,7 +35,10 @@ export class MineComponent implements OnInit {
 
   private destroy$ = new Subject<void>();
 
-  constructor(public eventoService: EventoService, private router: Router) {}
+  constructor(
+    public eventoService: EventoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCategorias();
@@ -48,8 +51,7 @@ export class MineComponent implements OnInit {
   }
 
   private loadEvents(): void {
-    this.eventoService
-      .miseventos()
+    this.eventoService.index()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: any) => {
@@ -61,13 +63,12 @@ export class MineComponent implements OnInit {
           this.errors = error.error.error;
           this.isLoading = false;
           console.error('Error al cargar los eventos:', error);
-        },
+        }
       });
   }
 
   private loadCategorias(): void {
-    this.eventoService
-      .categorias()
+    this.eventoService.categorias()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: any) => {
@@ -76,7 +77,7 @@ export class MineComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al cargar las categorías:', error);
-        },
+        }
       });
   }
 
@@ -87,13 +88,10 @@ export class MineComponent implements OnInit {
       tempEvents = [...this.eventos];
     } else {
       tempEvents = this.eventos.filter(
-        (evento) => evento.categoria_id === this.selectedCategoryId
+        evento => evento.categoria_id === this.selectedCategoryId
       );
     }
-    tempEvents.sort(
-      (a, b) =>
-        new Date(b.fecha_evento).getTime() - new Date(a.fecha_evento).getTime()
-    );
+    tempEvents.sort((a, b) => new Date(b.fecha_evento).getTime() - new Date(a.fecha_evento).getTime());
 
     this.filteredEventos = tempEvents;
     this.currentPage = 1;
@@ -101,9 +99,7 @@ export class MineComponent implements OnInit {
   }
 
   updatePagination(): void {
-    this.totalPages = Math.ceil(
-      this.filteredEventos.length / this.itemsPerPage
-    );
+    this.totalPages = Math.ceil(this.filteredEventos.length / this.itemsPerPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedEvents = this.filteredEventos.slice(startIndex, endIndex);
@@ -128,8 +124,7 @@ export class MineComponent implements OnInit {
     if (!this.eventos) {
       return 0;
     }
-    return this.eventos.filter((evento) => evento.categoria_id === categoryId)
-      .length;
+    return this.eventos.filter(evento => evento.categoria_id === categoryId).length;
   }
 
   selectCategory(categoryId: number | null): void {

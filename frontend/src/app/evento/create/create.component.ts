@@ -24,6 +24,7 @@ import { Subject, takeUntil } from 'rxjs';
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
+
 export class CreateEventoComponent implements OnInit, OnDestroy {
   eventoForm!: FormGroup; // Declara, pero no inicializa aquí
   errors: any = null;
@@ -106,7 +107,7 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: any) => {
           this.categorias = data;
-          console.log('Categorías cargadas:', this.categorias);
+          //console.log('Categorías cargadas:', this.categorias);
         },
         error: (error) => {
           console.error('Error al cargar las categorías:', error);

@@ -30,7 +30,7 @@ export class EventoService {
     return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}`);
   }
 
-  myPeticiones(): Observable<any> {
+  myeventos(): Observable<any> {
     return this.http.get('http://127.0.0.1:8000/api/eventos/mine');
   }
 

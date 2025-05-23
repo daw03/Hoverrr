@@ -6,14 +6,9 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { CreateEventoComponent } from './evento/create/create.component';
 import { EditEventoComponent } from './evento/edit/edit.component';
 import { IndexComponent } from './evento/index/index.component';
+import { TodoComponent } from './evento/todo/todo.component';
 import { MineComponent } from './evento/mine/mine.component';
 import { ViewEventoComponent } from './evento/view/view.component';
-import { IndexCategoriaComponent } from './admin/categorias/index/index.component';
-import { CreateCategoriaComponent } from './admin/categorias/create/create.component';
-import { EditCategoriaComponent } from './admin/categorias/edit/edit.component';
-import { IndexUserComponent } from './admin/user/index/index.component';
-import { EditUserComponent } from './admin/user/edit/edit.component';
-import { IndexEventoComponent } from './admin/eventos/index/index.component';
 import { NosotrosComponent } from './otros/nosotros/nosotros.component';
 import { ContactoComponent } from './otros/contacto/contacto.component';
 import { UserProfileEditComponent } from './components/user-profile-edit/user-profile-edit.component';
@@ -28,6 +23,7 @@ export const routes: Routes = [
   { path: 'evento/create', component: CreateEventoComponent },
   { path: 'evento/edit/:id', component: EditEventoComponent },
   { path: 'evento/index', component: IndexComponent },
+  { path: 'evento/todo', component: TodoComponent},
   { path: 'evento/mine', component: MineComponent },
   { path: 'evento/view/:id', component: ViewEventoComponent },
   { path: 'about', component: NosotrosComponent },
@@ -36,10 +32,4 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
-  /*{ path: 'admin/categoria/index', component: IndexCategoriaComponent },
-  { path: 'admin/categoria/create', component: CreateCategoriaComponent },
-  { path: 'admin/categoria/edit/:id', component: EditCategoriaComponent },
-  { path: 'admin/user/index', component: IndexUserComponent },
-  { path: 'admin/user/edit/:id', component: EditUserComponent },
-  { path: 'admin/eventos/index', component: IndexEventoComponent },*/
 ];
