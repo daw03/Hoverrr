@@ -29,4 +29,6 @@ export interface Evento {
     file_path: string;
     name?: string;
   };
+  estado?: boolean;
+  verParticipantes?: boolean;
 }

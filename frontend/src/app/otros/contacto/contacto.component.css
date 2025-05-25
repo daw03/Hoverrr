@@ -1,0 +1,98 @@
+/* src/app/contacto/contacto.component.css */
+
+/* Colores generales y de botones (tomados de tus estilos existentes) */
+.bg-turquoise {
+  background-color: #585c5e; /* Gris oscuro para fondos */
+}
+
+.btn-turquoise {
+  background-color: #37ffd7; /* Turquesa vibrante */
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-turquoise:hover {
+  background-color: #29c4a3; /* Turquesa más oscuro al pasar el ratón */
+}
+
+/* Estilos para el contenedor principal */
+.container {
+  padding: 20px;
+}
+
+/* Estilos para las tarjetas (card) */
+.card {
+  border: none; /* Quitamos el borde por defecto */
+  border-radius: 0 !important; /* Aseguramos que no haya esquinas redondeadas */
+}
+
+.card-header.bg-dark {
+  background-color: #343a40 !important; /* Gris oscuro para los encabezados de las tarjetas */
+  border-radius: 0 !important; /* Bordes rectangulares para el header */
+}
+
+.card-body {
+  background-color: #ffffff; /* Fondo blanco para el cuerpo de las tarjetas */
+  padding: 25px; /* Espaciado interno */
+}
+
+/* Estilos específicos para la sección "Sobre Nosotros" */
+.about-us-body img {
+  border-radius: 0 !important; /* Aseguramos que la imagen no tenga bordes redondeados */
+  object-fit: cover; /* Para que la imagen se ajuste bien */
+}
+
+/* Estilos específicos para el formulario de contacto */
+form .form-label {
+  font-weight: bold;
+  color: #343a40; /* Texto oscuro para las etiquetas */
+}
+
+form .form-control {
+  border-radius: 0 !important; /* Campos de input rectangulares */
+  border: 1px solid #ced4da; /* Borde gris claro */
+  box-shadow: none; /* Elimina sombras por defecto de Bootstrap si las hay */
+}
+
+form .form-control:focus {
+  border-color: #37ffd7; /* Borde turquesa al enfocar */
+  box-shadow: 0 0 0 0.25rem rgba(55, 255, 215, 0.25); /* Sombra turquesa suave al enfocar */
+}
+
+/* Estilos para la información de contacto (Teléfono, Dirección, Horario) */
+.contact-info li {
+  margin-bottom: 8px; /* Espaciado entre elementos de la lista */
+  color: #585c5e; /* Texto gris más suave */
+}
+
+.contact-info i {
+  margin-right: 8px; /* Espaciado entre el icono y el texto */
+  color: #37ffd7; /* Iconos en turquesa */
+}
+
+/* Estilos para los mensajes de validación y estado */
+.text-danger {
+  color: #dc3545 !important; /* Rojo para errores */
+}
+
+.alert-success {
+  background-color: #d1e7dd; /* Fondo verde claro */
+  border-color: #badbcc;
+  color: #0f5132;
+  border-radius: 0 !important; /* Mensaje de éxito rectangular */
+}
+
+.alert-danger {
+  background-color: #f8d7da; /* Fondo rojo claro */
+  border-color: #f5c2c7;
+  color: #842029;
+  border-radius: 0 !important; /* Mensaje de error rectangular */
+}
+
+/* Media query para botones en pantallas pequeñas */
+@media (max-width: 768px) {
+  .btn-turquoise {
+    width: 100%;
+  }
+}

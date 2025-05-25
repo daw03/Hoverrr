@@ -37,7 +37,7 @@ export class CreateCategoriaComponent {
         (result: any) => {
           console.log('Categoría creada exitosamente:', result);
           this.categoriaForm.reset();
-          this.router.navigate(['admin/categoria/index']);
+          this.router.navigate(['admin/categorias']);
         },
         (error: HttpErrorResponse) => {
           this.errors = error.error;

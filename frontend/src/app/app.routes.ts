@@ -8,8 +8,8 @@ import { EditEventoComponent } from './evento/edit/edit.component';
 import { IndexComponent } from './evento/index/index.component';
 import { TodoComponent } from './evento/todo/todo.component';
 import { MineComponent } from './evento/mine/mine.component';
+import { MinecreatedComponent } from './evento/minecreated/minecreated.component';
 import { ViewEventoComponent } from './evento/view/view.component';
-import { NosotrosComponent } from './otros/nosotros/nosotros.component';
 import { ContactoComponent } from './otros/contacto/contacto.component';
 import { UserProfileEditComponent } from './components/user-profile-edit/user-profile-edit.component';
 import { AdminModule } from './admin/admin.module';
@@ -25,8 +25,8 @@ export const routes: Routes = [
   { path: 'evento/index', component: IndexComponent },
   { path: 'evento/todo', component: TodoComponent},
   { path: 'evento/mine', component: MineComponent },
+  { path: 'evento/minecreated', component: MinecreatedComponent },
   { path: 'evento/view/:id', component: ViewEventoComponent },
-  { path: 'about', component: NosotrosComponent },
   { path: 'contacto', component: ContactoComponent },
   {
     path: 'admin',

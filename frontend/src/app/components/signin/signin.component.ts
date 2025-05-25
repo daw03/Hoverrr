@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from './../../shared/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { TokenService } from '../../shared/token.service';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule], 
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule], 
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
@@ -45,7 +45,7 @@ export class SigninComponent implements OnInit {
       () => {
         this.authState.setAuthState(true);  // Cambiar el estado de autenticación
         this.loginForm.reset();  // Resetear el formulario
-        this.router.navigate(['profile']);  // Redirigir al perfil del usuario
+        this.router.navigate(['']);  // Redirigir al perfil del usuario
       }
     );
   }

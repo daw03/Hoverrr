@@ -31,9 +31,10 @@ Route::controller(EventoController::class)->group(function () {
     Route::get('eventos/{id}', 'show'); // Ver detalles de un evento específico
     Route::post('eventos', 'store'); // Crear nuevo evento
     Route::put('eventos/{id}', 'update'); // Actualizar evento
-    Route::put('eventos/{id}/cambiar-estado', 'cambiarEstadoInscripcion'); // Cambiar estado de inscripción
+    Route::put('eventos/{id}/cambiar-estado', 'cambiarEstado'); // Cambiar estado de inscripción
     Route::delete('eventos/{id}', 'delete'); // Eliminar evento
     Route::post('eventos/{id}/inscribirse', 'inscribirse'); // Inscribirse en evento
+    Route::get('eventos/{id}/estainscrito', 'estaInscrito'); // Ver si el usuario está inscrito en un evento
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -61,8 +62,9 @@ Route::controller(UserController::class)->group(function () {
 });
 
 Route::controller(EventoUserController::class)->group(function () {
-    Route::delete('/eventos/{eventoId}/usuarios/{userId}/desinscribir', 'destroy'); // Desinscribir usuario de evento
-    Route::put('/eventos/{eventoId}/usuarios/{userId}/estado', 'cambiarEstado'); // Cambiar estado de inscripción
+    Route::delete('/eventos/{eventoId}/usuarios/{userId}/desinscribir', 'destroy');
+    Route::put('/eventos/{eventoId}/usuarios/{userId}/estado', 'cambiarEstado');
+    Route::get('/eventos/{eventoId}/usuarios', 'index');
 });
 
 Route::post('sendmail', [EmailController::class, 'send']);

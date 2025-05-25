@@ -20,7 +20,8 @@ body {
   left: 0 !important;
 }
 .menu__btn {
-  position: absolute;
+  display: block;
+  position: fixed; 
   top: 30px;
   left: 20px;
   width: 30px;
@@ -81,7 +82,10 @@ body {
   transform: translateX(-50%);
 }
 .navbar {
-  position: relative;
+  position: fixed; /* ¡CAMBIADO A FIXED! */
+  top: 0; /* Asegura que se pegue a la parte superior */
+  width: 100%; /* Ocupa todo el ancho */
+  z-index: 1;
 }
 
 .app-container {
@@ -91,7 +95,8 @@ body {
 }
 
 .main-content {
-  flex: 1; 
+  flex: 1;
+  padding-top: 65px;
 }
 
 router-outlet {
@@ -100,12 +105,4 @@ router-outlet {
 
 footer {
   width: 100%;
-}
-
-.organizador{
-  color: #7e2a2a;
-}
-
-.admin{
-  color: #4c7e2a;
 }

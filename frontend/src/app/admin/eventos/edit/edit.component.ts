@@ -3,10 +3,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core'; // Importa OnDestroy
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EventoService } from '../../evento/evento.service';
-import { Evento } from '../../evento/evento';
+import { EventoService } from '../../../evento/evento.service';
+import { Evento } from '../../../evento/evento';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Subject, takeUntil } from 'rxjs'; // Importa Subject y takeUntil
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -15,14 +15,19 @@ import { Subject, takeUntil } from 'rxjs'; // Importa Subject y takeUntil
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
-export class EditEventoComponent implements OnInit, OnDestroy { // Implementa OnDestroy
+export class EditComponent {
   eventoForm!: FormGroup;
   eventoId!: string;
   errors: any = null;
   selectedImage: File | null = null;
   evento!: Evento;
   // Definimos el tipo de la categoría directamente aquí, si no quieres una interfaz aparte
-  categorias: { id: number; nombre: string; created_at: string | null; updated_at: string | null }[] = [];
+  categorias: {
+    id: number;
+    nombre: string;
+    created_at: string | null;
+    updated_at: string | null;
+  }[] = [];
   private destroy$ = new Subject<void>(); // Para desuscribirse de los observables
 
   constructor(
@@ -53,7 +58,8 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
     if (id) {
       this.eventoId = id;
 
-      this.eventoService.show(this.eventoId)
+      this.eventoService
+        .show(this.eventoId)
         .pipe(takeUntil(this.destroy$)) // Usa takeUntil para desuscribirse
         .subscribe({
           next: (data: any) => {
@@ -70,7 +76,11 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
               nombre: this.evento.nombre,
               descripcion: this.evento.descripcion,
               // Formatear la fecha para que el input type="date" la acepte
-              fecha_evento: this.evento.fecha_evento ? new Date(this.evento.fecha_evento).toISOString().substring(0, 10) : '',
+              fecha_evento: this.evento.fecha_evento
+                ? new Date(this.evento.fecha_evento)
+                    .toISOString()
+                    .substring(0, 10)
+                : '',
               categoria_id: this.evento.categoria_id, // Asegura que esta propiedad coincida con el ID de la categoría
               ubicacion: this.evento.ubicacion,
               premios: this.evento.premios,
@@ -98,19 +108,22 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
 
   // Nuevo método para cargar las categorías
   private loadCategorias(): void {
-    this.eventoService.categorias()
+    this.eventoService
+      .categorias()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: any) => {
           this.categorias = data;
           //console.log('Categorías cargadas para editar:', this.categorias);
           if (this.evento && this.evento.categoria_id && this.eventoForm) {
-            this.eventoForm.get('categoria_id')?.setValue(this.evento.categoria_id);
+            this.eventoForm
+              .get('categoria_id')
+              ?.setValue(this.evento.categoria_id);
           }
         },
         error: (error) => {
           console.error('Error al cargar las categorías:', error);
-        }
+        },
       });
   }
 
@@ -149,7 +162,7 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
 
       this.eventoService.update(this.eventoId, formData).subscribe({
         next: () => {
-          this.router.navigate(['/evento/index']);
+          this.router.navigate(['admin/eventos']);
         },
         error: (error: HttpErrorResponse) => {
           this.errors = error.error;

@@ -70,7 +70,6 @@
 .event-card:hover { /* ¡Selector modificado para apuntar solo a .event-card! */
   transform: scale(1.03); /* Ligeramente más grande */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-  z-index: 10; /* Eleva la tarjeta para que no quede por debajo de las otras */
   cursor: pointer; /* Indica que es clicable */
 }
 

@@ -66,7 +66,7 @@ export class IndexEventoComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(['admin/evento/edit', id]);
+    this.router.navigate(['admin/eventos/edit', id]);
   }
 
   onDelete(id: number) {
@@ -82,5 +82,18 @@ export class IndexEventoComponent implements OnInit {
         }
       );
     }
+  }
+
+  cambiarEstado(id: number) {
+    this.eventoService.cambiarEstado(id).subscribe(
+      () => {
+        console.log('Estado del evento cambiado exitosamente.');
+        this.loadEventos();
+      },
+      (error: HttpErrorResponse) => {
+        this.errors = error.error;
+        console.error('Error al cambiar el estado del evento:', error);
+      }
+    );
   }
 }

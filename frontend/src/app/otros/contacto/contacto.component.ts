@@ -34,7 +34,7 @@ export class ContactoComponent {
   onSubmit() {
     if (this.contactForm.valid) {
       const { nombre, texto } = this.contactForm.value;
-      const userId = 'Usuario'; // Aquí podrías usar un ID real si aplica
+      const userId = 'Usuario';
 
       this.smtpService.enviarCorreo(nombre, texto, userId).subscribe({
         next: () => {

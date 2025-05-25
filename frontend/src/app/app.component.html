@@ -10,39 +10,45 @@
         <ul class="menu__box" id="menuBox">
           <li><a class="menu__item" routerLink="">Inicio</a></li>
           <li><a class="menu__item" routerLink="/evento/index">Eventos</a></li>
-          <li><a class="menu__item" routerLink="/evento/todo">Todos los eventos</a></li>
+          <li>
+            <a class="menu__item" routerLink="/evento/todo"
+              >Todos los eventos</a
+            >
+          </li>
           <li>
             <a *ngIf="isSignedIn" class="menu__item" routerLink="/evento/mine"
               >Mis eventos</a
             >
           </li>
           <li>
+            <a class="menu__item" routerLink="/contacto">Contacto</a>
+          </li>
+
+          <li>
             <a
               *ngIf="this.user.role_id >= 1"
-              class="menu__item organizador"
+              class="menu__item"
               routerLink="/evento/create"
+              style="color: #7e2a2a;"
               >Crear Eventos</a
             >
           </li>
           <li>
             <a
               *ngIf="this.user.role_id >= 1"
-              class="menu__item organizador"
-              routerLink="/evento/create"
+              class="menu__item"
+              style="color: #7e2a2a;"
+              routerLink="evento/minecreated"
               >Mis eventos creados</a
             >
           </li>
           <li>
             <a
               *ngIf="this.user.role_id == 2"
-              class="menu__item admin"
+              class="menu__item"
               routerLink="/admin/users"
+              style="color: #4c7e2a;"
               >Admin Panel</a
-            >
-          </li>
-          <li>
-            <a *ngIf="!isSignedIn" class="menu__item" routerLink="/register"
-              >Registrate</a
             >
           </li>
         </ul>
@@ -52,6 +58,7 @@
         <a
           class="navbar-brand text-dark fs-1"
           style="font-family: 'Bodoni Moda', serif; font-weight: bold"
+          routerLink=""
           >HOVERRR</a
         >
       </div>

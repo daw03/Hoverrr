@@ -16,6 +16,7 @@ class Evento extends Model
         'categoria_id',
         'premios',
         'inscripcion_abierta',
+        'verParticipantes',
         'precio',
         'ubicacion',
     ];

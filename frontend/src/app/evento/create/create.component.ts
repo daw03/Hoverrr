@@ -54,6 +54,7 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
       precio: new FormControl(null),
       premios: new FormControl(''),
       inscripcion_abierta: new FormControl(false),
+      verParticipantes: new FormControl(false),
       file: new FormControl('', [Validators.required]),
     });
 
@@ -130,6 +131,10 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
       eventoData.append(
         'inscripcion_abierta',
         this.eventoForm.value.inscripcion_abierta ? '1' : '0'
+      );
+      eventoData.append(
+        'verParticipantes',
+        this.eventoForm.value.verParticipantes ? '1' : '0'
       );
       eventoData.append('file', this.selectedImage);
 

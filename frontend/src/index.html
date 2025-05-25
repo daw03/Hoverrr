@@ -20,23 +20,24 @@
     />
   </head>
   <body>
-    
     <app-root></app-root>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         cierraMenu();
       });
-    
-      //Cierrar el menu al hacer click en un item
+
+      // Cierrar el menu al hacer click en un item
       function cierraMenu() {
         const menuBox = document.getElementById("menuBox");
         const menuToggle = document.getElementById("menu__toggle");
         const menuItems = menuBox.querySelectorAll(".menu__item");
-    
+
         menuItems.forEach((item) => {
           item.addEventListener("click", () => {
             menuToggle.checked = false;
+            // Asegurarse de restaurar el scroll cuando se cierra el menú desde un ítem
+            document.body.style.overflow = "";
           });
         });
       }

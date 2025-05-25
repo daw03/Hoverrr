@@ -7,6 +7,7 @@ import { IndexCategoriaComponent } from './categorias/index/index.component';
 import { CreateCategoriaComponent } from './categorias/create/create.component';
 import { EditCategoriaComponent } from './categorias/edit/edit.component';
 import { IndexEventoComponent } from './eventos/index/index.component';
+import { EditComponent } from './eventos/edit/edit.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'categorias/create', component: CreateCategoriaComponent },
       { path: 'categorias/edit/:id', component: EditCategoriaComponent },
       { path: 'eventos', component: IndexEventoComponent },
+      { path: 'eventos/edit/:id', component: EditComponent },
     ],
   },
 ];

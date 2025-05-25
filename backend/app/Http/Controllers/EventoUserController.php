@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Evento;
+use App\Models\User;
 
 class EventoUserController extends Controller
 {
@@ -12,7 +13,29 @@ class EventoUserController extends Controller
     {
         $this->middleware('auth:api');
     }
+        public function index($eventoId)
+    {
+        try {
+            $evento = Evento::with(['inscripciones' => function($query) {
+                $query->withPivot('estado', 'created_at', 'updated_at');
+            }])->findOrFail($eventoId);
 
+            $usuariosInscritos = $evento->inscripciones;
+
+            if ($usuariosInscritos->isEmpty()) {
+                return response()->json(['message' => 'No hay usuarios inscritos en este evento.'], 200);
+            }
+
+            // Devolver la colección de usuarios inscritos, que ahora son objetos User completos
+            return response()->json(['data' => $usuariosInscritos], 200);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Captura si el Evento no se encuentra
+            return response()->json(['error' => 'Evento no encontrado.'], 404);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => 'Error al obtener los usuarios inscritos: ' . $exception->getMessage()], 500);
+        }
+    }
     public function destroy(Request $request, $eventoId, $userId)
     {
         $user = Auth::user();

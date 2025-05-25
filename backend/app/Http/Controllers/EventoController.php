@@ -28,6 +28,7 @@ class EventoController extends Controller
                 'precio' => 'nullable|numeric',
                 'premios' => 'nullable|string',
                 'inscripcion_abierta' => 'nullable|boolean',
+                'verParticipantes' => 'nullable|boolean',
                 'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
@@ -95,6 +96,7 @@ class EventoController extends Controller
                 'precio' => 'nullable|numeric',
                 'premios' => 'nullable|string',
                 'inscripcion_abierta' => 'nullable|boolean',
+                'verParticipantes' => 'nullable|boolean',
                 'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
@@ -207,7 +209,24 @@ class EventoController extends Controller
         }
     }
 
-    public function cambiarEstadoInscripcion($id)
+    //Comprobar si el usuario esta inscrito en un evento
+    public function estaInscrito($id)
+    {
+        try {
+            $user = Auth::user();
+            $evento = Evento::findOrFail($id);
+
+            if ($evento->inscripciones()->where('user_id', $user->id)->exists()) {
+                return response()->json(['inscrito' => true], 200);
+            } else {
+                return response()->json(['inscrito' => false], 200);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function cambiarEstado($id)
     {
         try {
             $user = Auth::user();
@@ -218,11 +237,11 @@ class EventoController extends Controller
                 return response()->json(['error' => 'No tienes permisos para cambiar el estado de este evento.'], 403);
             }
 
-            $evento->inscripcion_abierta = $evento->inscripcion_abierta ? 0 : 1;
+            $evento->estado = $evento->estado ? 0 : 1;
             $evento->save();
 
             return response()->json([
-                'message' => 'Estado de inscripción actualizado correctamente.',
+                'message' => 'Estado de evento actualizado correctamente.',
                 'inscripcion_abierta' => $evento->inscripcion_abierta
             ], 200);
         } catch (\Exception $exception) {
