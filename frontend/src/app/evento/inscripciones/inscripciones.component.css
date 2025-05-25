@@ -1,0 +1,123 @@
+/* Reutiliza los estilos de tu vista de evento */
+.bg-turquoise {
+  background-color: #585c5e;
+}
+
+.btn-turquoise {
+  background-color: #37ffd7;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-turquoise:hover {
+  background-color: #29c4a3;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.card {
+  border: none;
+  border-radius: 0 !important; /* Asegura bordes rectos */
+}
+
+img {
+  border-radius: 0 !important; /* Asegura bordes rectos */
+}
+
+/* Estilos específicos para la tabla de inscripciones */
+.table {
+  width: 100%;
+  margin-bottom: 0; /* Elimina margen inferior de la tabla */
+  border-collapse: collapse; /* Para que los bordes de las celdas se unan */
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6; /* Borde entre filas */
+}
+
+.table thead th {
+  border-bottom: 2px solid #dee2e6; /* Borde más grueso en el encabezado */
+  font-weight: bold;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05); /* Efecto de filas alternas */
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075); /* Efecto hover en filas */
+}
+
+/* Estilos para los botones de la tabla */
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+}
+
+/* Clases de Bootstrap para los badges (similares a Tailwind que tenías) */
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.badge.rounded-pill {
+  border-radius: 50rem !important; /* Más redondeado */
+}
+
+/* Colores para los badges */
+.bg-success-subtle {
+  background-color: #d1e7dd; /* Verde claro */
+}
+.text-success {
+  color: #198754; /* Verde oscuro */
+}
+
+.bg-danger-subtle {
+  background-color: #f8d7da; /* Rojo claro */
+}
+.text-danger {
+  color: #dc3545; /* Rojo oscuro */
+}
+
+.bg-info-subtle {
+  background-color: #cff4fc; /* Azul claro */
+}
+.text-info {
+  color: #0dcaf0; /* Azul oscuro */
+}
+
+/* Nuevo estilo para hacer el estado clicable */
+.cursor-pointer {
+  cursor: pointer;
+}

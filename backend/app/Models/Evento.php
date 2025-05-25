@@ -19,6 +19,7 @@ class Evento extends Model
         'verParticipantes',
         'precio',
         'ubicacion',
+        'estado',
     ];
 
     public function categoria()

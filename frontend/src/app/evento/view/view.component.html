@@ -2,7 +2,12 @@
   <div class="card shadow-lg rounded-0 overflow-hidden">
     <!-- Título -->
     <div class="bg-turquoise p-4 text-white">
-      <h2 class="mb-0" style="font-family: 'Bodoni Moda', serif; font-weight: bold">{{ evento.nombre }}</h2>
+      <h2
+        class="mb-0"
+        style="font-family: 'Bodoni Moda', serif; font-weight: bold"
+      >
+        {{ evento.nombre }}
+      </h2>
     </div>
 
     <!-- Imagen -->
@@ -56,11 +61,66 @@
         <p [innerHTML]="formatearDescripcion(evento.descripcion)"></p>
       </div>
 
-      <!-- Botón de inscripción -->
-      <div *ngIf="evento.inscripcion_abierta" class="text-center">
-        <button class="btn btn-lg btn-turquoise px-5 py-3 fw-bold rounded-0" (click)="inscribirse()">
+      <!-- Inscripciones -->
+      <div class="mt-2 mb-2" *ngIf="evento">
+        <div
+          *ngIf="evento.verParticipantes && usuariosInscritos.length > 0"
+          class="card shadow-lg rounded-0 overflow-hidden mt-4"
+        >
+          <div class="bg-turquoise p-4 text-white">
+            <h3
+              class="mb-0"
+              style="font-family: 'Bodoni Moda', serif; font-weight: bold"
+            >
+              Participantes Inscritos
+            </h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+              <tbody>
+                <tr *ngFor="let usuario of usuariosInscritos">
+                  <td>{{ usuario.name }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          *ngIf="evento.verParticipantes && usuariosInscritos.length === 0"
+          class="alert alert-info mt-4"
+          role="alert"
+        >
+          Actualmente no hay participantes inscritos para este evento.
+        </div>
+      </div>
+
+      <div
+        *ngIf="evento.inscripcion_abierta && !estadoInscrito"
+        class="text-center"
+      >
+        <button
+          class="btn btn-lg btn-turquoise px-5 py-3 fw-bold rounded-0"
+          (click)="inscribirse()"
+        >
           ¡Quiero apuntarme!
         </button>
+      </div>
+
+      <div class="mt-2 mb-2" *ngIf="evento">
+        <div
+          *ngIf="evento && permisoEvento"
+        >
+          <button class="btn btn-danger me-2 mt-2" (click)="onDelete(evento.id!)" style="border-radius: 0;">
+            Borrar Evento
+          </button>
+          <button class="btn btn-primary me-2 mt-2" (click)="onEdit(evento.id!)" style="border-radius: 0;">
+            Editar Evento
+          </button>
+          <button class="btn btn-success mt-2" (click)="onEdit(evento.id!)" style="border-radius: 0;">
+            Gestionar participantes
+          </button>
+        </div>
       </div>
     </div>
   </div>

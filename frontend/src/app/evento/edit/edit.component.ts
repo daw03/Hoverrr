@@ -6,7 +6,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventoService } from '../../evento/evento.service';
 import { Evento } from '../../evento/evento';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Subject, takeUntil } from 'rxjs'; // Importa Subject y takeUntil
+import { Subject, takeUntil } from 'rxjs';
+import { User } from '../../app.component';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
   selector: 'app-edit',
@@ -15,20 +17,27 @@ import { Subject, takeUntil } from 'rxjs'; // Importa Subject y takeUntil
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
-export class EditEventoComponent implements OnInit, OnDestroy { // Implementa OnDestroy
+export class EditEventoComponent implements OnInit, OnDestroy {
+  // Implementa OnDestroy
   eventoForm!: FormGroup;
   eventoId!: string;
   errors: any = null;
   selectedImage: File | null = null;
   evento!: Evento;
-  // Definimos el tipo de la categoría directamente aquí, si no quieres una interfaz aparte
-  categorias: { id: number; nombre: string; created_at: string | null; updated_at: string | null }[] = [];
-  private destroy$ = new Subject<void>(); // Para desuscribirse de los observables
+  user: User = new User();
+  categorias: {
+    id: number;
+    nombre: string;
+    created_at: string | null;
+    updated_at: string | null;
+  }[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private eventoService: EventoService
+    private eventoService: EventoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +62,8 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
     if (id) {
       this.eventoId = id;
 
-      this.eventoService.show(this.eventoId)
+      this.eventoService
+        .show(this.eventoId)
         .pipe(takeUntil(this.destroy$)) // Usa takeUntil para desuscribirse
         .subscribe({
           next: (data: any) => {
@@ -70,7 +80,11 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
               nombre: this.evento.nombre,
               descripcion: this.evento.descripcion,
               // Formatear la fecha para que el input type="date" la acepte
-              fecha_evento: this.evento.fecha_evento ? new Date(this.evento.fecha_evento).toISOString().substring(0, 10) : '',
+              fecha_evento: this.evento.fecha_evento
+                ? new Date(this.evento.fecha_evento)
+                    .toISOString()
+                    .substring(0, 10)
+                : '',
               categoria_id: this.evento.categoria_id, // Asegura que esta propiedad coincida con el ID de la categoría
               ubicacion: this.evento.ubicacion,
               premios: this.evento.premios,
@@ -88,6 +102,8 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
       this.errors = 'ID de evento no proporcionado.';
       this.router.navigate(['/evento/index']);
     }
+    
+    this.getUserLoggedIn(); // Asegúrate de que el usuario esté logueado antes de cargar el evento
   }
 
   ngOnDestroy(): void {
@@ -98,19 +114,22 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
 
   // Nuevo método para cargar las categorías
   private loadCategorias(): void {
-    this.eventoService.categorias()
+    this.eventoService
+      .categorias()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: any) => {
           this.categorias = data;
           //console.log('Categorías cargadas para editar:', this.categorias);
           if (this.evento && this.evento.categoria_id && this.eventoForm) {
-            this.eventoForm.get('categoria_id')?.setValue(this.evento.categoria_id);
+            this.eventoForm
+              .get('categoria_id')
+              ?.setValue(this.evento.categoria_id);
           }
         },
         error: (error) => {
           console.error('Error al cargar las categorías:', error);
-        }
+        },
       });
   }
 
@@ -156,5 +175,25 @@ export class EditEventoComponent implements OnInit, OnDestroy { // Implementa On
         },
       });
     }
+  }
+
+  private getUserLoggedIn() {
+    this.authService
+      .profileUser()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any) => {
+          this.user = data;
+          if (this.user.role_id?.toString() === '0') {
+            this.router.navigate(['/evento/index']);
+          }
+          // SOLUCIÓN AQUÍ: Eliminar el '?' después de this.user.id
+          // y, si es necesario, añadir una comprobación de nulidad para this.user.id
+          else if (this.user.id !== this.evento.user_id) {
+            this.router.navigate(['/evento/index']);
+          }
+        },
+        // ... (manejo de errores si lo tienes)
+      });
   }
 }

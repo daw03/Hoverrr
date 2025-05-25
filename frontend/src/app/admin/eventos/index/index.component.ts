@@ -32,7 +32,7 @@ export class IndexEventoComponent implements OnInit {
   }
 
   loadEventos() {
-    this.eventoService.index().subscribe(
+    this.eventoService.list().subscribe(
       (data: Evento[]) => {
         this.eventos = data;
         this.totalPaginas = Math.ceil(this.eventos.length / this.itemsPorPagina);

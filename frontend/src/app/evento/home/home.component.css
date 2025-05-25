@@ -1,0 +1,121 @@
+/* src/app/home/home.component.css */
+
+/* Colores base y botones */
+.bg-turquoise {
+  background-color: #585c5e;
+}
+
+.btn-turquoise {
+  background-color: #37ffd7;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-turquoise:hover {
+  background-color: #29c4a3;
+}
+
+/* Estilos base de la tarjeta */
+.card {
+  border: none;
+  border-radius: 0 !important;
+}
+
+/* Estilos ESPECÍFICOS para las tarjetas de eventos */
+.event-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  overflow: hidden;
+  position: relative;
+}
+
+.event-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+/* Estilo para los eventos cuya fecha ya ha pasado */
+.event-passed {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(80%);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  transform: scale(1);
+  box-shadow: none;
+}
+
+.event-card.event-passed:hover {
+  transform: scale(1);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Estilos específicos para los controles del carrusel (flechas) */
+.events-carousel-container {
+  position: relative;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  pointer-events: none;
+}
+
+/* Posicionamiento individual de los botones */
+.carousel-control-btn.prev-btn {
+  position: absolute;
+  left: 20px;
+}
+
+.carousel-control-btn.next-btn {
+  position: absolute;
+  right: 20px;
+}
+
+.carousel-control-btn {
+  pointer-events: all;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(52, 58, 64, 0.7);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-control-btn:hover {
+  background-color: rgba(52, 58, 64, 1);
+}
+
+.carousel-control-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Estilo para el nuevo botón de cuenta */
+.create-account-btn {
+  border-radius: 0 !important;
+}
+
+/* Nuevo estilo para el rectángulo de la sección de características */
+.feature-box {
+  background-color: #e9ecef; /* Un tono de gris claro */
+  padding: 30px; /* Espaciado interno */
+  border-radius: 0; /* Asegura esquinas rectangulares */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sutil sombra para dar profundidad */
+}
+
+/* Ajuste para la imagen dentro del feature box para que no tenga bordes redondeados si no se desea */
+.feature-box img {
+  border-radius: 0 !important;
+}

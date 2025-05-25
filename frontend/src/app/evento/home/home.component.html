@@ -1,0 +1,133 @@
+<div class="container-fluid mt-4">
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando eventos...</span>
+    </div>
+    <p class="mt-2">Cargando eventos...</p>
+  </div>
+
+  <h3 class="text-center my-4">
+    Hoverrr: La comunidad donde los drones y los eventos despegan
+  </h3>
+
+  <div
+    *ngIf="!isLoading && visibleEvents.length > 0; else noUpcomingEvents"
+    class="events-carousel-container d-none d-lg-block"
+  >
+    <div class="row g-3 justify-content-center">
+      <div
+        *ngFor="let evento of visibleEvents"
+        class="col-lg-2 col-md-4 col-sm-6"
+      >
+        <div
+          class="card h-100 shadow-sm border-0 rounded-0 bg-turquoise event-card"
+        >
+          <div class="mt-1 ms-2">
+            <h6
+              class="card-title text-white fw-bold text-truncate"
+              style="font-family: 'Bodoni Moda', serif"
+              title="{{ evento.nombre }}"
+            >
+              {{ evento.nombre }}
+            </h6>
+          </div>
+
+          <img
+            *ngIf="evento.file?.file_path"
+            [src]="
+              'http://127.0.0.1:8000/storage/' + (evento.file?.file_path ?? '')
+            "
+            class="card-img-top rounded-0"
+            alt="Imagen del evento"
+            style="height: 120px; object-fit: cover"
+            onerror="this.onerror=null;this.src='https://placehold.co/400x120/cccccc/333333?text=Sin+Imagen';"
+          />
+
+          <div
+            class="card-body p-2"
+            style="background-color: rgb(204, 204, 204)"
+          >
+            <p class="card-text text-muted mb-1 small">
+              <strong>📅 Fecha:</strong> {{ evento.fecha_evento }}
+            </p>
+
+            <div class="d-grid mt-2">
+              <button
+                class="btn btn-turquoise btn-sm rounded-0"
+                (click)="verDetalles(evento?.id)"
+              >
+                Ver Detalles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button
+        class="btn btn-secondary carousel-control-btn prev-btn"
+        (click)="prev()"
+        [disabled]="currentStartIndex === 0"
+      >
+        ←
+      </button>
+      <button
+        class="btn btn-secondary carousel-control-btn next-btn"
+        (click)="next()"
+        [disabled]="currentStartIndex + itemsPerPage >= nextEvents.length"
+      >
+        →
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noUpcomingEvents>
+    <p class="text-center text-muted my-5">
+      No hay próximos eventos para mostrar.
+    </p>
+  </ng-template>
+
+  <hr />
+  <div class="text-center my-4">
+    <button class="btn btn-secondary btn-lg create-account-btn" routerLink="/login">
+      ¡Crea tu cuenta 🚀!
+    </button>
+  </div>
+  <hr />
+
+  <div class="feature-box my-5">
+    <div class="row feature-section align-items-center">
+      <div class="col-md-6 text-center">
+        <img
+          src="dronepaisaje.png"
+          class="img-fluid"
+          alt="Paisaje con Drones"
+        />
+      </div>
+      <div class="col-md-6">
+        <p class="lead">
+          🚀 ¡Atención, pilotos y amantes de los drones! <br />
+          🌟 ¿Qué te espera en Hoverrr?<br />
+          🛠️ Talleres y conferencias con expertos del sector.<br />
+          🎮 Competiciones y exhibiciones en vivo de freestyle y carreras.<br />
+          🔍 Zona de exposición con las últimas innovaciones en drones.<br />
+          🤝 Networking con profesionales y apasionados del mundo dron.<br />
+          🔥 No te lo pierdas! Únete a la revolución aérea y sé parte de la
+          comunidad dron. 🚁
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+  <div class="text-center my-4">
+    <button class="btn btn-secondary btn-lg create-account-btn" routerLink="/evento/index">
+      Mas eventos 🛸⭐
+    </button>
+  </div>
+
+  <div *ngIf="errors" class="alert alert-danger mt-3">
+    <p>Error: {{ errors }}</p>
+  </div>
+</div>

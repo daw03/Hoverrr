@@ -22,6 +22,10 @@ export class EventoService {
     return this.http.get('http://127.0.0.1:8000/api/eventos');
   }
 
+  list(): Observable<any> {
+    return this.http.get('http://127.0.0.1:8000/api/eventoslist');
+  }
+
   miseventos(): Observable<any> {
     return this.http.get('http://127.0.0.1:8000/api/eventos/inscrito');
   }
@@ -48,14 +52,45 @@ export class EventoService {
   }
 
   inscribirse(id: number): Observable<any> {
-    return this.http.post(`http://127.0.0.1:8000/api/eventos/${id}/inscribirse/`, {});
+    return this.http.post(
+      `http://127.0.0.1:8000/api/eventos/${id}/inscribirse/`,
+      {}
+    );
   }
 
   cambiarEstado(id: number): Observable<any> {
-    return this.http.put(`http://127.0.0.1:8000/api/eventos/${id}/cambiar-estado`, {});
+    return this.http.put(
+      `http://127.0.0.1:8000/api/eventos/${id}/cambiar-estado`,
+      {}
+    );
   }
 
-  estaInscrito(id: string): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}/estainscrito`);
+  estaInscrito(id: number): Observable<any> {
+    return this.http.get(
+      `http://127.0.0.1:8000/api/eventos/${id}/estainscrito`
+    );
+  }
+
+  getEventosInscritos(id: number): Observable<any> {
+    return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}/usuarios`);
+  }
+
+  cambiarEstadoInscripcion(id: number, userId: number): Observable<any> {
+    return this.http.put(
+      `http://127.0.0.1:8000/api/eventos/${id}/usuarios/${userId}/estado`,
+      {}
+    );
+  }
+
+  borrarInscripcion(id: number, userId: number): Observable<any> {
+    return this.http.delete(
+      `http://127.0.0.1:8000/api/eventos/${id}/usuarios/${userId}/desinscribir`,
+      {}
+    );
+  }
+
+  sendMail(to: string, message: string) {
+    const body = { to, message };
+    return this.http.post('http://localhost:8000/api/sendmail', body);
   }
 }

@@ -24,7 +24,6 @@ import { Subject, takeUntil } from 'rxjs';
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
 })
-
 export class CreateEventoComponent implements OnInit, OnDestroy {
   eventoForm!: FormGroup; // Declara, pero no inicializa aquí
   errors: any = null;
@@ -32,7 +31,12 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
   selectedImage!: any;
   isSignedIn!: boolean;
   user: User = new User();
-  categorias: { id: number; nombre: string; created_at: string | null; updated_at: string | null }[] = [];
+  categorias: {
+    id: number;
+    nombre: string;
+    created_at: string | null;
+    updated_at: string | null;
+  }[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -103,7 +107,8 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
   }
 
   private loadCategorias(): void {
-    this.eventoService.categorias()
+    this.eventoService
+      .categorias()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: any) => {
@@ -112,7 +117,7 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error al cargar las categorías:', error);
-        }
+        },
       });
   }
 
@@ -142,6 +147,7 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
         this.eventoService.create(eventoData).subscribe(
           (result: any) => {
             console.log('Evento creado exitosamente:', result);
+            this.enviarCorreo(this.eventoForm.value.nombre);
             this.eventoForm.reset();
             this.router.navigate(['/evento/index']);
           },
@@ -157,6 +163,43 @@ export class CreateEventoComponent implements OnInit, OnDestroy {
   metoImagen(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImage = event.target.files[0];
+    }
+  }
+
+  enviarCorreo(nombreEvento: string) {
+    if (this.token.isLoggedIn() && this.user && this.user.email) {
+      const to = this.user.email;
+
+      const message = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; color: #333;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <h2 style="color:rgb(112, 245, 205); text-align: center;">¡Evento creado con éxito!</h2>
+          <p style="font-size: 16px;">Hola <strong>${
+            this.user.name || 'usuario'
+          }</strong>,</p>
+          <p style="font-size: 16px;">
+            Tu evento <strong>"${nombreEvento}"</strong> ha sido creado correctamente. Nuestro equipo lo revisará y será aprobado si cumple con nuestras políticas.
+          </p>
+          <p style="font-size: 16px;">Gracias por usar nuestra plataforma.</p>
+          <p style="font-size: 12px; color: #888; margin-top: 30px; text-align: center;">
+            Este correo fue generado automáticamente. No respondas a este mensaje.
+          </p>
+        </div>
+      </div>
+    `;
+
+      this.eventoService.sendMail(to, message).subscribe(
+        (result: any) => {
+          console.log('Correo de confirmación enviado exitosamente:');
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error al enviar el correo de confirmación:', error);
+        }
+      );
+    } else {
+      console.warn(
+        'No se pudo enviar el correo: Usuario no autenticado o email no disponible.'
+      );
     }
   }
 }

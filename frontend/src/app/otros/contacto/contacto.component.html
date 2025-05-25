@@ -1,24 +1,38 @@
 <div class="container mt-4 mb-4">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10 col-sm-12">
-
       <div class="card shadow-sm border-0 rounded-0 mb-4">
         <div class="card-header bg-dark text-white fw-bold rounded-0">
           Sobre Nosotros
         </div>
         <div class="card-body about-us-body">
-          <img src="fotoequipo.jpg" alt="Foto del equipo o empresa" class="img-fluid mb-3 rounded-0">
+          <img
+            src="fotoequipo.jpg"
+            alt="Foto del equipo o empresa"
+            class="img-fluid mb-3 rounded-0"
+          />
           <p>
-            En Hoverrr, somos una empresa apasionada por crear momentos inolvidables y experiencias que perduran. Desde nuestra fundación en 2024, nos hemos dedicado a ofrecer un servicio excepcional en el ámbito de la organización de eventos de aeromodelismo.
+            En Hoverrr, somos una empresa apasionada por crear momentos
+            inolvidables y experiencias que perduran. Desde nuestra fundación en
+            2024, nos hemos dedicado a ofrecer un servicio excepcional en el
+            ámbito de la organización de eventos de aeromodelismo.
           </p>
           <p>
-            Nuestro equipo está formado por profesionales altamente cualificados, innovadores y, sobre todo, apasionados por lo que hacen. Nos encanta afrontar nuevos desafíos y transformarlos en éxitos, siempre con un enfoque en la creatividad y la satisfacción del cliente.
+            Nuestro equipo está formado por profesionales altamente
+            cualificados, innovadores y, sobre todo, apasionados por lo que
+            hacen. Nos encanta afrontar nuevos desafíos y transformarlos en
+            éxitos, siempre con un enfoque en la creatividad y la satisfacción
+            del cliente.
           </p>
           <p>
-            Creemos firmemente en la fuerza de la comunidad y el poder de la conexión a través de eventos únicos. Nos esforzamos por superar las expectativas y construir relaciones duraderas con cada persona que confía en nosotros.
+            Creemos firmemente en la fuerza de la comunidad y el poder de la
+            conexión a través de eventos únicos. Nos esforzamos por superar las
+            expectativas y construir relaciones duraderas con cada persona que
+            confía en nosotros.
           </p>
           <p>
-            Si buscas un aliado comprometido y con visión para hacer realidad tus proyectos, ¡estás en el lugar adecuado!
+            Si buscas un aliado comprometido y con visión para hacer realidad
+            tus proyectos, ¡estás en el lugar adecuado!
           </p>
         </div>
       </div>
@@ -28,47 +42,77 @@
         </div>
         <div class="card-body">
           <p>
-            ¿Tienes alguna pregunta, sugerencia o simplemente quieres saludarnos? Estamos aquí para ayudarte. Puedes contactarnos en el siguiente horario o usar el formulario para enviarnos un mensaje.
+            ¿Tienes alguna pregunta, sugerencia o simplemente quieres
+            saludarnos? Estamos aquí para ayudarte. Puedes contactarnos en el
+            siguiente horario o usar el formulario para enviarnos un mensaje.
           </p>
 
           <ul class="list-unstyled contact-info">
-            <li><strong><i class="bi bi-telephone-fill"></i> Teléfono:</strong> +34 941 123 456</li>
-            <li><strong><i class="bi bi-geo-alt-fill"></i> Dirección:</strong> Calle de los Drones, 42, Logroño, España</li>
-            <li><strong><i class="bi bi-clock-fill"></i> Horario de atención:</strong> Lunes a Viernes de 9:00 a 18:00</li>
+            <li>
+              <strong><i class="bi bi-telephone-fill"></i> Teléfono:</strong>
+              +34 941 123 456
+            </li>
+            <li>
+              <strong><i class="bi bi-geo-alt-fill"></i> Dirección:</strong>
+              Calle de los Drones, 42, Logroño, España
+            </li>
+            <li>
+              <strong
+                ><i class="bi bi-clock-fill"></i> Horario de atención:</strong
+              >
+              Lunes a Viernes de 9:00 a 18:00
+            </li>
           </ul>
 
-          <h3 class="mb-3">Envíanos un mensaje</h3>
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre:</label>
-              <input type="text" id="nombre" formControlName="nombre" class="form-control rounded-0" />
-              <div *ngIf="contactForm.controls['nombre'].invalid && contactForm.controls['nombre'].touched" class="text-danger small mt-1">
-                El nombre es requerido.
+          <div *ngIf="autenticado">
+            <h3 class="mb-3">Envíanos un mensaje</h3>
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="texto" class="form-label">Mensaje:</label>
+                <textarea
+                  id="texto"
+                  formControlName="texto"
+                  class="form-control rounded-0"
+                ></textarea>
+                <div
+                  *ngIf="
+                    contactForm.controls['texto'].invalid &&
+                    contactForm.controls['texto'].touched
+                  "
+                  class="text-danger small mt-1"
+                >
+                  El mensaje es requerido.
+                </div>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label for="texto" class="form-label">Mensaje:</label>
-              <textarea id="texto" formControlName="texto" class="form-control rounded-0"></textarea>
-              <div *ngIf="contactForm.controls['texto'].invalid && contactForm.controls['texto'].touched" class="text-danger small mt-1">
-                El mensaje es requerido.
+              <button
+                type="submit"
+                [disabled]="contactForm.invalid"
+                class="btn btn-turquoise rounded-0 w-100"
+              >
+                Enviar Mensaje
+              </button>
+
+              <div
+                *ngIf="mensajeEnviado"
+                class="alert alert-success mt-3"
+                role="alert"
+              >
+                ¡Mensaje enviado correctamente!
               </div>
-            </div>
 
-            <button type="submit" [disabled]="contactForm.invalid" class="btn btn-turquoise rounded-0 w-100">
-              Enviar Mensaje
-            </button>
-
-            <div *ngIf="mensajeEnviado" class="alert alert-success mt-3" role="alert">
-              ¡Mensaje enviado correctamente!
-            </div>
-
-            <div *ngIf="errorEnvio" class="alert alert-danger mt-3" role="alert">
-              Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.
-            </div>
-          </form>
+              <div
+                *ngIf="errorEnvio"
+                class="alert alert-danger mt-3"
+                role="alert"
+              >
+                Hubo un error al enviar el mensaje. Por favor, inténtalo de
+                nuevo más tarde.
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 </div>

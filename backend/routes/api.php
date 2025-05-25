@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EventoUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(EventoController::class)->group(function () {
     Route::get('eventos', 'index'); // Listar todos los eventos
+    Route::get('eventoslist', 'list'); // Listar eventos filtrados
     Route::get('eventos/mine', 'listmine'); // Listar eventos del usuario autenticado
     Route::get('eventos/inscrito', 'misinscripciones'); // Mis eventos inscritos
     Route::get('eventos/{id}', 'show'); // Ver detalles de un evento específico
@@ -67,4 +67,6 @@ Route::controller(EventoUserController::class)->group(function () {
     Route::get('/eventos/{eventoId}/usuarios', 'index');
 });
 
-Route::post('sendmail', [EmailController::class, 'send']);
+use App\Http\Controllers\MailController;
+
+Route::post('/sendmail', [MailController::class, 'send']);

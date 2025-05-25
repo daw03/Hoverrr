@@ -18,6 +18,12 @@ class EventoController extends Controller
     }
     public function store(Request $request)
     {
+        //Comprobar si el usuario tiene el rol
+        $user = Auth::user();
+        if ($user->role_id == 0) {
+            return response()->json(['error' => 'No tienes permiso.'], 403);
+        }
+
         try {
             $this->validate($request, [
                 'nombre' => 'required|max:255',
@@ -78,13 +84,14 @@ class EventoController extends Controller
     }
     public function update(Request $request, $id)
     {
-        try {
-            $user = Auth::user();
-            if (!$user || $user->role_id !== "2") {
-                return response()->json(['error' => 'No tienes permiso de administrador.'], 403);
-            }
 
+        try {
+            //Compruebo el user
+            $user = Auth::user();
             $evento = Evento::query()->findOrFail($id);
+            if ($evento->user_id !== $user->id || $user->rol_id == 2) {
+                return response()->json(['error' => 'No tienes permisos para actualizar este evento.'], 403);
+            }
 
             // Validación
             $this->validate($request, [
@@ -125,6 +132,7 @@ class EventoController extends Controller
 
     public function delete(Request $request, $id)
     {
+
         try {
             $evento = Evento::findOrFail($id);
 
@@ -144,13 +152,31 @@ class EventoController extends Controller
     public function index()
     {
         try {
-            $eventos = Evento::with('file', 'user', 'categoria')->get(); //Con file
-            //$eventos = Evento::with('user', 'categoria')->get(); //Sin file
-            return $eventos;
+            // Obtener solo los eventos activos (estado = 1), con relaciones
+            $eventos = Evento::with(['file', 'user', 'categoria'])
+                ->where('estado', 1)
+                ->get();
+
+            return response()->json($eventos, 200); // Simplemente devuelve los eventos
+
         } catch (\Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()]);
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], 500);
         }
     }
+
+    public function list()
+    {
+        try {
+            // Obtener todos los eventos, con relaciones
+            $eventos = Evento::with(['file', 'user', 'categoria'])->get();
+            return response()->json($eventos, 200);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
     public function listmine()
     {
         try {

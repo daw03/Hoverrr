@@ -13,12 +13,14 @@ class EventoUserController extends Controller
     {
         $this->middleware('auth:api');
     }
-        public function index($eventoId)
+    public function index($eventoId)
     {
         try {
-            $evento = Evento::with(['inscripciones' => function($query) {
-                $query->withPivot('estado', 'created_at', 'updated_at');
-            }])->findOrFail($eventoId);
+            $evento = Evento::with([
+                'inscripciones' => function ($query) {
+                    $query->withPivot('estado', 'created_at', 'updated_at');
+                }
+            ])->findOrFail($eventoId);
 
             $usuariosInscritos = $evento->inscripciones;
 
@@ -40,11 +42,16 @@ class EventoUserController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->id !== (int) $userId && $user->role_id !== 2) {
-            return response()->json(['error' => 'No tienes permiso para eliminar esta inscripción.'], 403);
-        }
-
         try {
+            $evento = Evento::findOrFail($eventoId);
+
+            $esAdmin = $user->role_id === 2;
+            $esOrganizador = $evento->user_id === $user->id;
+
+            if (!($esAdmin || $esOrganizador)) {
+                return response()->json(['error' => 'No tienes permisos para eliminar esta inscripción.'], 403);
+            }
+
             $deleted = DB::table('evento_user')
                 ->where('evento_id', $eventoId)
                 ->where('user_id', $userId)
@@ -55,6 +62,8 @@ class EventoUserController extends Controller
             } else {
                 return response()->json(['error' => 'No se encontró la inscripción para eliminar.'], 404);
             }
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Evento no encontrado.'], 404);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
