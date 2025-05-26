@@ -21,7 +21,7 @@ import { AuthService } from './../../shared/auth.service';
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class UserProfileEditComponent {
-  private apiUrl = 'http://127.0.0.1:8000/api/users';
+  private apiUrl = 'http://98.66.153.140/api/api/users';
   userForm!: FormGroup;
   errors: any = null;
   isSignedIn!: boolean;
