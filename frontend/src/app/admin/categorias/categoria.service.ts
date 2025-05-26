@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://127.0.0.1:8000/api/categorias';
+  private apiUrl = 'http://98.66.153.140/api/api/categorias';
 
   constructor(private http: HttpClient) {}
 
