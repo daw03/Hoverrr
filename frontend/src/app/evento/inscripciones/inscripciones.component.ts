@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth.service';
 import { User } from '../../app.component';
+import { Evento } from '../evento';
 
 interface UserInscripcion {
   id: number;
@@ -30,6 +31,7 @@ export class InscripcionesComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
   user: User = new User();
+  idOK: number = 0;
 
   constructor(
     private eventoService: EventoService,
@@ -42,17 +44,19 @@ export class InscripcionesComponent implements OnInit {
     // Obtener el ID del evento de la URL
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('id');
-      if (idParam) {
-        this.eventoId = +idParam; // Convierte el string a number
-        this.loadInscripciones();
-      } else {
-        this.error = 'El ID del evento no se encontró en la URL.';
-        this.loading = false;
+      try {
+        if (idParam) {
+          this.eventoId = +idParam; // Convierte el string a number
+          this.loadInscripciones();
+          this.obtenerEvento();
+        } else {
+          this.error = 'El ID del evento no se encontró en la URL.';
+          this.loading = false;
+        }
+      } catch (error) {
+        //this.router.navigate(['/evento/index']);
       }
     });
-
-    // Verificar user
-    this.getUserLoggedIn();
   }
   loadInscripciones(): void {
     this.loading = true;
@@ -118,21 +122,28 @@ export class InscripcionesComponent implements OnInit {
   }
 
   private getUserLoggedIn() {
-      this.authService
-        .profileUser()
-        .subscribe({
-          next: (data: any) => {
-            this.user = data;
-            if (this.user.role_id?.toString() === '0') {
-              this.router.navigate(['/evento/index']);
-            }
-            // SOLUCIÓN AQUÍ: Eliminar el '?' después de this.user.id
-            // y, si es necesario, añadir una comprobación de nulidad para this.user.id
-            else if (this.user.id !== this.eventoId) {
-              this.router.navigate(['/evento/index']);
-            }
-          },
-          // ... (manejo de errores si lo tienes)
-        });
+    this.authService.profileUser().subscribe({
+      next: (data: any) => {
+        this.user = data;
+        if (this.user.role_id == 0) {
+          console.log('Usuario normal');
+          this.router.navigate(['/evento/index']);
+        } else if (
+          this.user.id != this.idOK
+        ) {
+          this.router.navigate(['/evento/index']);
+        }
+      },
+    });
+  }
+
+  obtenerEvento() {
+    if (this.eventoId) {
+      
+      this.eventoService.show(this.eventoId.toString()).subscribe((data: any) => {
+        this.idOK = data.user_id; 
+        this.getUserLoggedIn();
+      });
     }
+  }
 }

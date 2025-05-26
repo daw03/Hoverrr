@@ -141,13 +141,13 @@ export class ViewEventoComponent implements OnInit {
   }
 
   tienePermisoEvento(): void {
-    console.log(this.usuario.role_id);
+    //console.log(this.usuario.role_id);
     if (this.usuario.role_id === 2) {
       this.permisoEvento = true;
     } else if (this.evento && this.evento.user_id == this.usuario.id) {
       this.permisoEvento = true;
     }
-    console.log('Permiso para editar evento:', this.permisoEvento);
+    //console.log('Permiso para editar evento:', this.permisoEvento);
   }
 
   onDelete(id: number) {
@@ -166,6 +166,10 @@ export class ViewEventoComponent implements OnInit {
 
   onEdit(id: number) {
     this.router.navigate(['/evento/edit', id]);
+  }
+
+  onInscripciones(id: number) {
+    this.router.navigate(['/evento/inscripciones', id]);
   }
 
   enviarCorreo(nombreEvento: string) {
