@@ -52,11 +52,11 @@ export class EventoService {
   }
 
   inscribirse(id: number): Observable<any> {
-    return this.http.post(
-      `http://98.66.153.140/api/api/eventos/${id}/inscribirse/`,
-      {}
-    );
-  }
+  return this.http.post(
+    `http://98.66.153.140/api/api/eventos/${id}/inscribirse`, // Removed trailing slash
+    {}
+  );
+}
 
   cambiarEstado(id: number): Observable<any> {
     return this.http.put(
