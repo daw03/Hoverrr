@@ -13,84 +13,84 @@ export class EventoService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
-    return this.http.post('http://127.0.0.1:8000/api/eventos', evento, {
+    return this.http.post('http://98.66.153.140/api/api/eventos', evento, {
       headers: headers,
     });
   }
 
   index(): Observable<any> {
-    return this.http.get('http://127.0.0.1:8000/api/eventos');
+    return this.http.get('http://98.66.153.140/api/api/eventos');
   }
 
   list(): Observable<any> {
-    return this.http.get('http://127.0.0.1:8000/api/eventoslist');
+    return this.http.get('http://98.66.153.140/api/api/eventoslist');
   }
 
   miseventos(): Observable<any> {
-    return this.http.get('http://127.0.0.1:8000/api/eventos/inscrito');
+    return this.http.get('http://98.66.153.140/api/api/eventos/inscrito');
   }
 
   show(id: string): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}`);
+    return this.http.get(`http://98.66.153.140/api/api/eventos/${id}`);
   }
 
   miseventoscreados(): Observable<any> {
-    return this.http.get('http://127.0.0.1:8000/api/eventos/mine');
+    return this.http.get('http://98.66.153.140/api/api/eventos/mine');
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete(`http://127.0.0.1:8000/api/eventos/${id}`, {});
+    return this.http.delete(`http://98.66.153.140/api/api/eventos/${id}`, {});
   }
 
   update(id: string, evento: FormData): Observable<any> {
     evento.append('_method', 'PUT');
-    return this.http.post(`http://127.0.0.1:8000/api/eventos/${id}`, evento);
+    return this.http.post(`http://98.66.153.140/api/api/eventos/${id}`, evento);
   }
 
   categorias(): Observable<any> {
-    return this.http.get('http://127.0.0.1:8000/api/categorias');
+    return this.http.get('http://98.66.153.140/api/api/categorias');
   }
 
   inscribirse(id: number): Observable<any> {
     return this.http.post(
-      `http://127.0.0.1:8000/api/eventos/${id}/inscribirse/`,
+      `http://98.66.153.140/api/api/eventos/${id}/inscribirse/`,
       {}
     );
   }
 
   cambiarEstado(id: number): Observable<any> {
     return this.http.put(
-      `http://127.0.0.1:8000/api/eventos/${id}/cambiar-estado`,
+      `http://98.66.153.140/api/api/eventos/${id}/cambiar-estado`,
       {}
     );
   }
 
   estaInscrito(id: number): Observable<any> {
     return this.http.get(
-      `http://127.0.0.1:8000/api/eventos/${id}/estainscrito`
+      `http://98.66.153.140/api/api/eventos/${id}/estainscrito`
     );
   }
 
   getEventosInscritos(id: number): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/api/eventos/${id}/usuarios`);
+    return this.http.get(`http://98.66.153.140/api/api/eventos/${id}/usuarios`);
   }
 
   cambiarEstadoInscripcion(id: number, userId: number): Observable<any> {
     return this.http.put(
-      `http://127.0.0.1:8000/api/eventos/${id}/usuarios/${userId}/estado`,
+      `http://98.66.153.140/api/api/eventos/${id}/usuarios/${userId}/estado`,
       {}
     );
   }
 
   borrarInscripcion(id: number, userId: number): Observable<any> {
     return this.http.delete(
-      `http://127.0.0.1:8000/api/eventos/${id}/usuarios/${userId}/desinscribir`,
+      `http://98.66.153.140/api/api/eventos/${id}/usuarios/${userId}/desinscribir`,
       {}
     );
   }
 
   sendMail(to: string, message: string) {
     const body = { to, message };
-    return this.http.post('http://localhost:8000/api/sendmail', body);
+    return this.http.post('http://98.66.153.140/api/api/sendmail', body);
   }
 }

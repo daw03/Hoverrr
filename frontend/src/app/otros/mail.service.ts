@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MailService {
-  private apiUrl = 'http://127.0.0.1:8000/api/sendmail';
+  private apiUrl = 'http://98.66.153.140/api/api/sendmail';
 
   constructor(private http: HttpClient) {}
 
